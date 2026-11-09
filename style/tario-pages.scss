@@ -2735,10 +2735,15 @@ $t-tablet: 1100px;
     grid-template-columns: repeat(8, minmax(0, 1fr));
     gap: 16px;
 
+    /* Each aisle keeps its column: a one-word name ("Beverages") made its
+       column wider than the others and its circle bigger on a phone. */
     a {
       display: grid;
       justify-items: center;
+      align-content: start;
       gap: 8px;
+      min-width: 0;
+      overflow-wrap: anywhere;
       color: var(--k-ink) !important;
       font-size: 14px;
       font-weight: 600;
