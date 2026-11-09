@@ -1,0 +1,63 @@
+/* ▆▆▆▆▆▆▆▆▆▆▆▆▆▆ Tario — dark mode, and the theme switcher's loose ends ▆▆▆▆▆▆▆▆▆▆▆▆▆▆
+
+   The theme switcher (components/tario/tario-theme.ts, the header's Theme
+   button) turns the page dark by tokens and by the build step that gives
+   every fixed colour a dark value (postcss-dark-tokens). This file holds
+   what neither can know. Loaded last (storefront.scss); the build step
+   leaves rules that name html.tr-dark alone. */
+
+/* The footer's Selldone credit and GDPR link are "plain" buttons at 62%
+   opacity. Tario's footer is light: full opacity, the muted grey (it turns
+   light with the footer in dark mode). */
+.k-footer__base-links .v-btn {
+  opacity: 1 !important;
+
+  .v-btn__content,
+  .v-btn__content * {
+    color: var(--k-muted) !important;
+  }
+}
+
+/* Selldone's "Free shipping" line is Vuetify's green-darken-2: under 4.5:1
+   on Tario's floor. A deeper green reads 4.9:1 (a light green when dark). */
+.-shipping-box.text-green-darken-2 {
+  color: #2e7d32 !important;
+}
+
+/* Selldone's small red notes ("[Invalid]", a field's error) are Vuetify's
+   red-accent #f44336: 3.7:1 on white. A deeper red reads 5.9:1 (a light
+   red when dark). */
+html .text-red {
+  color: #c4122f !important;
+}
+
+html.tr-dark {
+  /* ── Light islands ──
+     The home mosaic's pastel tiles and the yellow offer tag stay light:
+     inside them the dark tokens go back to their light values, so the words
+     on them stay dark in every palette. */
+  .k-mtile:not(.-lead),
+  .k-shelf__tag.-offer {
+    --k-ink: #1f1f1f;
+    --k-ink-2: #333333;
+    --k-muted: #555555;
+    --k-card: #ffffff;
+    --t-link: var(--t-band);
+    --tsd-surface-ffffff: initial;
+    --tsd-text-8a3c1d: initial;
+    color: #1f1f1f;
+  }
+
+  & .text-red {
+    color: #ff6b7d !important;
+  }
+
+  .-shipping-box.text-green-darken-2 {
+    color: #4ade80 !important;
+  }
+
+  /* The product's QR button is a dark line drawing: light on the dark page. */
+  .k-crumbs__tools img {
+    filter: invert(1);
+  }
+}

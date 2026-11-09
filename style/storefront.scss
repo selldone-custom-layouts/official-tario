@@ -29,6 +29,7 @@
 @use "tario-home"; // Tario design A: the big-box home, header and footer
 @use "tario-pages"; // Tario 1.2.0: every page after the home (the chosen mockups)
 @use "kalio-compare"; // the compare page (design 1, 8 November 2026)
+@use "tario-dark"; // Tario: dark mode and the theme switcher's loose ends (last)
 
 // --------------------------------------------------------
 .add-marginal-side-menu-open {

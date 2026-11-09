@@ -52,7 +52,7 @@
 
   /* Ratings (design A, 7 November 2026): amber stars on a warm grey. */
   --k-amber: #333333;
-  --k-star-off: #d6d6d6;
+  --k-star-off: #858585; /* an empty star is an icon: 3:1 or more on white */
 
   /* Type */
   --k-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -67,6 +67,17 @@
   --k-gutter: clamp(16px, 2.4vw, 24px);
   --k-tap: 44px;
   --k-shadow: 0 10px 28px -14px rgba(20, 20, 20, 0.32);
+
+  /* The theme switcher (components/tario/tario-theme.ts) writes these on
+     <html> for the chosen palette and mode; these are Tario red's. */
+  --t-link: #cc0000; /* the action colour as words: lighter in dark mode */
+  --t-band: #a30000; /* bands with pale words: the palette's light deep shade in both modes */
+  --t-primary-rgb: 204, 0, 0;
+  --t-on-brand: #ffffff; /* words on the action colour (dark on a light brand colour) */
+  --t-on-brand-rgb: 255, 255, 255;
+  --t-ink-bg: #1f1f1f; /* ink used as a fill; the palette colour when dark */
+  --t-sale-solid: #cc0000; /* sale badges with white words: the same in light and dark */
+  --k-plain: #f7f7f7; /* boxes on the well colour that hold no photo (receipts, empty states, bands): dark in dark mode */
 }
 
 /* Selldone's own pieces that Kalio keeps (the account's returns, gift
@@ -75,9 +86,10 @@
    purple (112, 85, 126), so they showed purple buttons beside Kalio's green
    ones. Kalio's green and deep green take those places (5 November 2026). */
 :root,
-.v-theme--light {
-  --v-theme-primary: 204, 0, 0 !important;
-  --v-theme-on-primary: 255, 255, 255 !important;
+.v-theme--light,
+.v-theme--dark {
+  --v-theme-primary: var(--t-primary-rgb, 204, 0, 0) !important;
+  --v-theme-on-primary: var(--t-on-brand-rgb, 255, 255, 255) !important;
   --v-theme-secondary: 31, 31, 31 !important;
   --v-theme-on-secondary: 255, 255, 255 !important;
 }
@@ -167,7 +179,7 @@ s:has(> .u--price) {
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--k-green);
+  color: var(--t-link);
   margin: 0 0 8px;
 }
 
@@ -217,14 +229,14 @@ s:has(> .u--price) {
 
   &:hover {
     border-color: var(--k-green);
-    color: var(--k-green) !important;
+    color: var(--t-link) !important;
   }
 }
 
 /* On the deep-green board: a white button and an outlined one. */
 .k-btn--light {
   background: #fff;
-  color: var(--k-green-deep) !important;
+  color: var(--t-link) !important;
 
   &:hover {
     background: #fdf1f1;
@@ -251,7 +263,7 @@ s:has(> .u--price) {
   font-family: var(--k-body);
   font-size: 15px;
   font-weight: 600;
-  color: var(--k-green) !important;
+  color: var(--t-link) !important;
   text-decoration: none;
 
   &:hover {
@@ -275,7 +287,7 @@ s:has(> .u--price) {
 
   &:hover {
     border-color: var(--k-green);
-    color: var(--k-green);
+    color: var(--t-link);
   }
 
   &:disabled {

@@ -19,7 +19,7 @@ $t-tablet: 1100px;
   &.-red {
     border: 0;
     background: var(--k-green);
-    color: #fff !important;
+    color: var(--t-on-brand) !important;
 
     &:hover {
       background: var(--k-green-deep);
@@ -56,7 +56,7 @@ $t-tablet: 1100px;
   color: var(--k-muted);
 
   a {
-    color: var(--k-green) !important;
+    color: var(--t-link) !important;
     text-decoration: none;
 
     &:hover {
@@ -101,7 +101,7 @@ $t-tablet: 1100px;
 
   input:checked + &__box {
     border-color: var(--k-ink);
-    background: var(--k-ink);
+    background: var(--t-ink-bg);
 
     .v-icon {
       opacity: 1;
@@ -454,7 +454,7 @@ $t-tablet: 1100px;
 
   &.-all {
     border-color: var(--k-ink);
-    background: var(--k-ink);
+    background: var(--t-ink-bg);
     color: #fff;
   }
 
@@ -466,7 +466,7 @@ $t-tablet: 1100px;
     padding: 0 6px;
     border-radius: 10px;
     background: var(--k-green);
-    color: #fff;
+    color: var(--t-on-brand);
     font-size: 12px;
     font-weight: 800;
   }
@@ -696,7 +696,7 @@ $t-tablet: 1100px;
 
   &.-on {
     border-color: var(--k-ink);
-    background: var(--k-ink);
+    background: var(--t-ink-bg);
     color: #fff;
   }
 }
@@ -842,7 +842,7 @@ $t-tablet: 1100px;
 
 .t-pdp__brand {
   width: max-content;
-  color: var(--k-green) !important;
+  color: var(--t-link) !important;
   font-size: 14.5px;
   font-weight: 700;
   text-decoration: none;
@@ -879,7 +879,7 @@ $t-tablet: 1100px;
 }
 
 .t-pdp__ratelink {
-  color: var(--k-green) !important;
+  color: var(--t-link) !important;
 }
 
 .t-pdp__norate {
@@ -961,7 +961,7 @@ $t-tablet: 1100px;
     color: var(--k-ink-2);
 
     .v-icon {
-      color: var(--k-green);
+      color: var(--t-link);
     }
   }
 }
@@ -1050,7 +1050,7 @@ $t-tablet: 1100px;
   color: var(--k-ink-2);
 
   .v-icon {
-    color: var(--k-green);
+    color: var(--t-link);
   }
 }
 
@@ -1134,7 +1134,7 @@ $t-tablet: 1100px;
 
   input:checked + &__cbx {
     border-color: var(--k-ink);
-    background: var(--k-ink);
+    background: var(--t-ink-bg);
 
     .v-icon {
       opacity: 1;
@@ -1151,7 +1151,7 @@ $t-tablet: 1100px;
     font-weight: 800;
 
     &.-sale {
-      color: var(--k-green);
+      color: var(--t-link);
     }
   }
 
@@ -1302,7 +1302,7 @@ $t-tablet: 1100px;
     }
 
     .v-icon {
-      color: var(--k-green);
+      color: var(--t-link);
     }
   }
 }
@@ -1355,7 +1355,7 @@ $t-tablet: 1100px;
   font-size: 15.5px;
 
   > .v-icon {
-    color: var(--k-green);
+    color: var(--t-link);
   }
 
   &__t {
@@ -1363,10 +1363,10 @@ $t-tablet: 1100px;
     min-width: 0;
 
     b {
-      color: var(--k-green);
+      color: var(--t-link);
 
       &:first-child {
-        color: var(--k-green);
+        color: var(--t-link);
       }
     }
   }
@@ -1475,7 +1475,7 @@ $t-tablet: 1100px;
 
 .k-lines__visit {
   margin-inline-start: auto;
-  color: var(--k-green) !important;
+  color: var(--t-link) !important;
   font-size: 14.5px;
   font-weight: 700;
   text-decoration: none;
@@ -1504,7 +1504,7 @@ $t-tablet: 1100px;
   cursor: pointer;
 
   &:hover {
-    color: var(--k-green);
+    color: var(--t-link);
   }
 }
 
@@ -1513,7 +1513,7 @@ $t-tablet: 1100px;
   border-radius: 8px !important;
 
   button {
-    color: var(--k-green) !important;
+    color: var(--t-link) !important;
   }
 }
 
@@ -1632,7 +1632,7 @@ $t-tablet: 1100px;
   }
 
   > .v-icon {
-    color: var(--k-green);
+    color: var(--t-link);
   }
 
   > span {
@@ -1674,11 +1674,11 @@ $t-tablet: 1100px;
 /* The summary's button is always red: it takes the shopper to what is missing. */
 .k-cart .k-cart__go.-off {
   background: var(--k-green) !important;
-  color: #fff !important;
+  color: var(--t-on-brand) !important;
   opacity: 1 !important;
 
   * {
-    color: #fff !important;
+    color: var(--t-on-brand) !important;
     opacity: 1 !important;
   }
 }
@@ -1769,7 +1769,7 @@ $t-tablet: 1100px;
     border-radius: 8px !important;
 
     button {
-      color: var(--k-green) !important;
+      color: var(--t-link) !important;
     }
   }
 
@@ -1779,7 +1779,7 @@ $t-tablet: 1100px;
     gap: 2px;
 
     .-sale {
-      color: var(--k-green);
+      color: var(--t-link);
     }
 
     s {
@@ -1811,7 +1811,7 @@ $t-tablet: 1100px;
     font-size: 15px;
 
     &.-save {
-      color: var(--k-green);
+      color: var(--t-link);
     }
 
     &.-tot {
@@ -1841,7 +1841,7 @@ $t-tablet: 1100px;
   font-size: 14.5px;
 
   b {
-    color: var(--k-green);
+    color: var(--t-link);
   }
 
   .t-meter__bar {
@@ -1919,7 +1919,7 @@ $t-tablet: 1100px;
   font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.05em;
-  color: var(--k-green);
+  color: var(--t-link);
 
   i {
     width: 12px;
@@ -1965,7 +1965,7 @@ $t-tablet: 1100px;
   }
 
   .v-icon {
-    color: var(--k-green);
+    color: var(--t-link);
   }
 }
 
@@ -1976,7 +1976,7 @@ $t-tablet: 1100px;
   line-height: 1.5;
 
   a {
-    color: var(--k-green) !important;
+    color: var(--t-link) !important;
   }
 }
 
@@ -2019,7 +2019,7 @@ $t-tablet: 1100px;
     border: 5px solid #fff;
     border-radius: 50%;
     background: #fff;
-    color: var(--k-green);
+    color: var(--t-link);
     overflow: hidden;
 
     img {
@@ -2224,7 +2224,7 @@ $t-tablet: 1100px;
 
   &__eyebrow {
     margin: 0;
-    color: var(--k-green);
+    color: var(--t-link);
     font-size: 12.5px;
     font-weight: 800;
     letter-spacing: 0.14em;
@@ -2248,7 +2248,7 @@ $t-tablet: 1100px;
       text-decoration: none;
 
       &.-on {
-        background: var(--k-ink);
+        background: var(--t-ink-bg);
         border-color: var(--k-ink);
         color: #fff;
       }
@@ -2427,7 +2427,7 @@ $t-tablet: 1100px;
 
   &__eyebrow {
     margin: 0 !important;
-    color: var(--k-green) !important;
+    color: var(--t-link) !important;
     font-size: 12.5px !important;
     font-weight: 800;
     letter-spacing: 0.14em;
@@ -2441,7 +2441,7 @@ $t-tablet: 1100px;
     margin-top: 26px;
     border-radius: 14px;
     background: var(--k-green);
-    color: #fff;
+    color: var(--t-on-brand);
     text-align: center;
 
     div {
@@ -2484,7 +2484,7 @@ $t-tablet: 1100px;
     }
 
     .v-icon {
-      color: var(--k-green);
+      color: var(--t-link);
     }
 
     b {
@@ -2539,7 +2539,7 @@ $t-tablet: 1100px;
 
     em {
       margin-inline-start: auto;
-      color: var(--k-green);
+      color: var(--t-link);
       font-style: normal;
       font-weight: 700;
     }
@@ -2588,7 +2588,7 @@ $t-tablet: 1100px;
     }
 
     li .v-icon {
-      color: var(--k-green);
+      color: var(--t-link);
     }
   }
 
@@ -2672,7 +2672,7 @@ $t-tablet: 1100px;
     height: 120px;
     border-radius: 50%;
     background: var(--k-green-soft);
-    color: var(--k-green);
+    color: var(--t-link);
   }
 
   &__code {
@@ -2717,7 +2717,7 @@ $t-tablet: 1100px;
       border: 0;
       border-radius: 50%;
       background: var(--k-green);
-      color: #fff;
+      color: var(--t-on-brand);
       cursor: pointer;
     }
   }

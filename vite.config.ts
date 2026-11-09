@@ -18,6 +18,8 @@ import path from "path";
 import fs from "fs";
 import vitePluginRequire from "vite-plugin-require";
 import basicSsl from "@vitejs/plugin-basic-ssl";
+// The theme switcher's dark mode for fixed colours (components/theme-switcher).
+import darkTokens from "./components/theme-switcher/tools/postcss-dark-tokens.mjs";
 
 const manifest = require("./manifest.json");
 
@@ -98,6 +100,23 @@ export default ({mode}: any) => {
           ]
           : []),
     ],
+    /* Dark mode for every fixed colour in the Layout's styles and Selldone's
+       components: each light literal becomes var(--tsd-…, literal), with the
+       dark values under html.tr-dark (the header's Theme button sets the
+       class). Light mode computes exactly as before. Vuetify follows its own
+       theme. */
+    css: {
+      postcss: {
+        plugins: [
+          darkTokens({
+            darkSelector: "html.tr-dark",
+            include: [/\/style\//, /\/StorefrontApp\.vue/, /\/components\//, /\/pages\//, /\/layouts\//],
+            exclude: [/\/node_modules\//, /\/modules\/pagebuilder\//, /\/theme-switcher\//],
+            lightVars: ["--k-well", "--k-tint"],
+          }),
+        ],
+      },
+    },
     resolve: {
       alias: {
         // ━━━━━━━━━━━━ Define fix path for modules ━━━━━━━━━━━━
