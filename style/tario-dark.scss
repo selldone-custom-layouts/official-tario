@@ -27,6 +27,12 @@
 /* Selldone's small red notes ("[Invalid]", a field's error) are Vuetify's
    red-accent #f44336: 3.7:1 on white. A deeper red reads 5.9:1 (a light
    red when dark). */
+/* The Add strip under a yellow offer tag: the link colour of a light palette
+   (teal) read 4.3:1 on the yellow; the deep shade reads 6:1 or more. */
+.k-shelf__tag.-offer button.k-shelf__strip {
+  color: var(--t-band) !important;
+}
+
 html .text-red {
   color: #c4122f !important;
 }

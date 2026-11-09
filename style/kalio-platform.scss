@@ -2168,3 +2168,12 @@ button.k-compare-fab.s--storefront-products-comparison-circle-progress {
   text-decoration: underline !important;
   text-underline-offset: 3px;
 }
+
+/* Words inside a link or a button (an em, a span) carry no line either: the
+   owner's rule (8 November 2026) is no line under any word or icon, and
+   Walio's hero tiles still underlined "Shop deals" in an em (9 November
+   2026). Only links inside an article's own text keep theirs (.k-prose a:
+   a line drawn by the link itself still runs under its words). */
+:where(a, button, [role="button"], [role="link"]) :where(em, span, b, strong, small, i, p, h1, h2, h3, h4, div) {
+  text-decoration: none !important;
+}
