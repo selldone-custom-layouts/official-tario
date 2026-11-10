@@ -64,8 +64,8 @@
             <!-- The parts joined with " · ", so no line starts with a dot. -->
             <small>{{ [item.message, item.cod && cod_payment_exists ? "Pay on delivery" : "", item.sod ? "Pay at the door" : ""].filter(Boolean).join(" · ") }}</small>
           </span>
-          <span v-if="item.free_shipping" class="k-ship__free">
-            Free<template v-if="item.free_shipping_limit"> over <span class="u--price">{{ money(item.free_shipping_limit, item.currency, { short: "auto" }) }}</span></template>
+          <span v-if="item.free_shipping && (!item.free_shipping_limit || moneyIfKnown(item.free_shipping_limit, item.currency))" class="k-ship__free">
+            Free<template v-if="item.free_shipping_limit"> over <span class="u--price">{{ moneyIfKnown(item.free_shipping_limit, item.currency, { short: "auto" }) }}</span></template>
           </span>
         </button>
 
@@ -167,7 +167,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { money } from "../../../components/region-switcher/region";
+import { moneyIfKnown } from "../../../components/tario/tario-home";
 import ProductsDenseImagesCircles from "@selldone/components-vue/storefront/product/products-dense-images-circles/ProductsDenseImagesCircles.vue";
 import { ShopTransportations } from "@selldone/core-js/enums/logistic/ShopTransportations.ts";
 import { ETA } from "@selldone/core-js/enums/logistic/ETA.ts";
@@ -467,8 +467,9 @@ export default defineComponent({
   },
 
   methods: {
-    /* The way's threshold, in the shopper's currency. */
-    money,
+    /* The way's threshold, in the shopper's currency (hidden until the
+       shop's rates are in, never in the wrong currency). */
+    moneyIfKnown,
     getShopTransportationObject(type) {
       return ShopTransportations[type];
     },

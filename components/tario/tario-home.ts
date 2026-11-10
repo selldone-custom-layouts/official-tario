@@ -18,6 +18,7 @@
  *
  * Nothing here names a product, a price or a seller.
  */
+import { baseCurrency, convert, currentCurrency, money, type MoneyShort } from "../region-switcher/region";
 
 declare const window: any;
 
@@ -165,4 +166,24 @@ export function freeShippingFrom(shop: any): { amount: number; currency: string 
   if (!paid.length) return null;
   const best = paid.reduce((a: any, b: any) => (Number(b.free_shipping_limit) < Number(a.free_shipping_limit) ? b : a));
   return { amount: Number(best.free_shipping_limit), currency: best.currency || null };
+}
+
+/** An amount (in `from`, or the shop's base currency) in the shopper's
+ *  currency, or null while it cannot be converted: the shop's rates arrive
+ *  with the full shop record, seconds after the first paint (later under
+ *  Selldone's 429s), and a reload with DKK stored must not show "$200" in
+ *  the meantime. Reactive: the rates come through the store, so the line
+ *  appears the moment they do. */
+export function moneyIfKnown(amount: number, from?: string | null, options: { short?: MoneyShort } = {}): string | null {
+  const f = from || baseCurrency();
+  if (f !== currentCurrency() && convert(amount, f) == null) return null;
+  return money(amount, f, options);
+}
+
+/** A shop amount converted into another currency (a cart's), or null while
+ *  the rate is not known: a meter must not subtract one currency from another. */
+export function convertIfKnown(amount: number, from: string | null | undefined, to: string): number | null {
+  const f = from || baseCurrency();
+  if (f === to) return Number(amount);
+  return convert(amount, f, to);
 }

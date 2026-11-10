@@ -27,9 +27,7 @@
     <!-- ▆▆▆▆▆▆▆▆ Promo strip ▆▆▆▆▆▆▆▆ -->
     <div class="t-promo">
       <div class="t-promo__row k-wrap">
-        <span v-if="promo" class="t-promo__text">
-          {{ t("money.freeShippingOver", { amount: money(promo.amount, promo.currency, { short: "auto" }) }) }}
-        </span>
+        <span v-if="promoText" class="t-promo__text">{{ promoText }}</span>
         <span v-else class="t-promo__text">Real savings in every aisle, every week</span>
         <router-link :to="dealsRoute">Shop deals</router-link>
       </div>
@@ -328,11 +326,11 @@ import { defineAsyncComponent } from "vue";
 import SStorefrontSearchBox from "@selldone/components-vue/storefront/search/SStorefrontSearchBox.vue";
 import RegionSwitcherButton from "../../region-switcher/RegionSwitcherButton.vue";
 import RegionSheet from "../../region-switcher/RegionSheet.vue";
-import { money, t } from "../../region-switcher/region";
+import { t } from "../../region-switcher/region";
 import KalioBasketDrawer from "./KalioBasketDrawer.vue";
 import { EventBus } from "@selldone/components-vue/utils/events/EventBus.ts";
 import { aisleImage, aisleRoute, aisles, catalogueRoute, dealsRoute, sellerRoute, tintFor, vendorImage, vendors } from "../kalio-catalog";
-import { freeShippingFrom } from "../../tario/tario-home";
+import { freeShippingFrom, moneyIfKnown } from "../../tario/tario-home";
 import { basketView } from "../kalio-basket";
 
 export default {
@@ -412,6 +410,15 @@ export default {
     promo() {
       return freeShippingFrom(this.$shop);
     },
+    /* The strip's words, drawn at render in the shopper's currency. Until
+       the shop's rates arrive (a reload with DKK stored) the amount cannot
+       be converted, so the strip keeps its general line rather than show
+       "$200"; it switches the moment the rates come. */
+    promoText() {
+      if (!this.promo) return null;
+      const amount = moneyIfKnown(this.promo.amount, this.promo.currency, { short: "auto" });
+      return amount ? t("money.freeShippingOver", { amount }) : null;
+    },
     ordersRoute() {
       return { name: window.$storefront.routes.HISTORY_ORDERS_PHYSICAL };
     },
@@ -468,7 +475,6 @@ export default {
   },
 
   methods: {
-    money,
     t,
     aisleRoute,
     aisleImage,

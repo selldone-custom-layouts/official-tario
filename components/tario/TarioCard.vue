@@ -22,9 +22,9 @@
     </router-link>
 
     <div class="t-card__price">
-      <u-price :amount="now" :currency="currency" class="t-card__now" />
+      <u-price :amount="now" :currency="price.currency || currency" class="t-card__now" />
       <template v-if="was">
-        <span class="t-card__was">reg <u-price :amount="was" :currency="currency" /></span>
+        <span class="t-card__was">reg <u-price :amount="was" :currency="price.currency || currency" /></span>
         <em class="t-card__sale">Sale</em>
       </template>
     </div>

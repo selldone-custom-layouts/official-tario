@@ -42,7 +42,7 @@
       </div>
 
       <!-- How far from free shipping, from the shop's own rule. -->
-      <div v-if="basket?.items?.length && free_from" :class="{ '-done': free_left <= 0 }" class="t-meter">
+      <div v-if="basket?.items?.length && free_from && free_limit != null" :class="{ '-done': free_left <= 0 }" class="t-meter">
         <v-icon aria-hidden="true" size="26">local_shipping</v-icon>
         <div class="t-meter__t">
           <template v-if="free_left > 0">
@@ -51,7 +51,7 @@
           <template v-else><b>Free shipping</b> on this order</template>
           <div class="t-meter__bar"><i :style="{ width: free_pct + '%' }"></i></div>
         </div>
-        <span class="t-meter__rule">Free over <span class="u--price">{{ money(free_from.amount, free_from.currency, { short: "auto" }) }}</span></span>
+        <span class="t-meter__rule">Free over <span class="u--price">{{ moneyIfKnown(free_from.amount, free_from.currency, { short: "auto" }) }}</span></span>
       </div>
 
       <nav v-if="filtered_types.length > 1" aria-label="Baskets" class="k-cart__types">
@@ -136,7 +136,7 @@
                   <b>{{ w.word }}</b>
                   <small>{{ w.line }}</small>
                   <em v-if="w.free">Free</em>
-                  <em v-else-if="w.freeOver">Free on orders over <span class="u--price">{{ money(w.freeOver, w.currency, { short: "auto" }) }}</span></em>
+                  <em v-else-if="w.freeOver && moneyIfKnown(w.freeOver, w.currency)">Free on orders over <span class="u--price">{{ moneyIfKnown(w.freeOver, w.currency, { short: "auto" }) }}</span></em>
                   <em v-else class="-later">Price with your address</em>
                 </span>
               </button>
@@ -495,8 +495,8 @@ import { TimeSpans } from "@selldone/core-js/enums/logistic/TimeSpans";
 import KalioCartLines from "../../../components/kalio/checkout/KalioCartLines.vue";
 import KalioOftenAdded from "../../../components/kalio/KalioOftenAdded.vue";
 import KalioAddressSheet from "../../../components/kalio/checkout/KalioAddressSheet.vue";
-import { freeShippingFrom, waysOf } from "../../../components/tario/tario-home";
-import { baseCurrency, convert, currentCurrency, money } from "../../../components/region-switcher/region";
+import { convertIfKnown, freeShippingFrom, moneyIfKnown, waysOf } from "../../../components/tario/tario-home";
+import { currentCurrency, money } from "../../../components/region-switcher/region";
 
 export default {
   name: "StorefrontPageBasketCart",
@@ -1024,16 +1024,17 @@ export default {
     free_currency() {
       return this.bill?.currency || this.basket?.currency || currentCurrency();
     },
+    /* null until the shop's rates are in: the meter waits rather than
+       subtract one currency from another. */
     free_limit() {
-      if (!this.free_from) return 0;
-      const v = convert(this.free_from.amount, this.free_from.currency || baseCurrency(), this.free_currency);
-      return v == null ? this.free_from.amount : v;
+      if (!this.free_from) return null;
+      return convertIfKnown(this.free_from.amount, this.free_from.currency, this.free_currency);
     },
     free_left() {
-      return this.free_from ? Math.max(0, this.free_limit - this.free_base) : 0;
+      return this.free_limit != null ? Math.max(0, this.free_limit - this.free_base) : 0;
     },
     free_pct() {
-      return this.free_from ? Math.min(100, Math.round((this.free_base / this.free_limit) * 100)) : 0;
+      return this.free_limit ? Math.min(100, Math.round((this.free_base / this.free_limit) * 100)) : 0;
     },
     detail_cards() {
       return (this.show_when ? 1 : 0) + (this.has_delivery ? 1 : 0) + 1;
@@ -1172,6 +1173,7 @@ export default {
    * ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
    */
   methods: {
+    moneyIfKnown,
     money,
     ShadeColor,
 

@@ -20,7 +20,7 @@
           <b>{{ way.word }}</b>
           <span class="t-way__line">{{ way.line }}</span>
           <em v-if="way.free">Free</em>
-          <em v-else-if="way.freeOver">Free on orders over <span class="u--price">{{ money(way.freeOver, way.currency, { short: "auto" }) }}</span></em>
+          <em v-else-if="way.freeOver && moneyIfKnown(way.freeOver, way.currency)">Free on orders over <span class="u--price">{{ moneyIfKnown(way.freeOver, way.currency, { short: "auto" }) }}</span></em>
         </span>
       </li>
     </ul>
@@ -28,8 +28,7 @@
 </template>
 
 <script>
-import { waysOf } from "./tario-home";
-import { money } from "../region-switcher/region";
+import { moneyIfKnown, waysOf } from "./tario-home";
 
 export default {
   name: "TarioWays",
@@ -42,8 +41,9 @@ export default {
   },
 
   methods: {
-    /* The way's threshold, in the shopper's currency. */
-    money,
+    /* The way's threshold, in the shopper's currency (hidden until the
+       shop's rates are in, never in the wrong currency). */
+    moneyIfKnown,
   },
 };
 </script>

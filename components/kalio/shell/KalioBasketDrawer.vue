@@ -21,7 +21,7 @@
     <div class="t-bdrawer__body">
       <section v-for="group in groups" :key="group.type" class="k-bdrawer__group">
         <p v-if="groups.length > 1" class="t-bdrawer__type">{{ typeName(group.type) }}</p>
-        <div v-if="free_from && group.type === 'PHYSICAL'" class="t-meter2">
+        <div v-if="free_from && group.type === 'PHYSICAL' && freeLimit(group) != null" class="t-meter2">
           <template v-if="freeLeft(group) > 0">
             Add <b><span class="u--price">{{ money(freeLeft(group), group.currency) }}</span></b> more for free shipping
           </template>
@@ -91,8 +91,8 @@
 import { ProductType } from "@selldone/core-js/enums/product/ProductType";
 import { settling, shownCount, stepTo } from "../kalio-basket";
 import { productImage, vendorImage, vendors } from "../kalio-catalog";
-import { freeShippingFrom } from "../../tario/tario-home";
-import { baseCurrency, convert, currentCurrency, money } from "../../region-switcher/region";
+import { convertIfKnown, freeShippingFrom } from "../../tario/tario-home";
+import { currentCurrency, money } from "../../region-switcher/region";
 import KalioOftenAdded from "../KalioOftenAdded.vue";
 
 /* The size of a variant in words: its volume, weight, pack, colour or style. */
@@ -186,17 +186,18 @@ export default {
     /* The shop's threshold in this basket's currency (the way's own
        currency may differ), so the meter subtracts like from like. */
     freeLimit(group) {
-      if (!this.free_from) return 0;
-      const v = convert(this.free_from.amount, this.free_from.currency || baseCurrency(), group.currency || currentCurrency());
-      return v == null ? this.free_from.amount : v;
+      if (!this.free_from) return null;
+      return convertIfKnown(this.free_from.amount, this.free_from.currency, group.currency || currentCurrency());
     },
 
     freeLeft(group) {
-      return this.free_from ? Math.max(0, this.freeLimit(group) - group.total) : 0;
+      const limit = this.freeLimit(group);
+      return limit != null ? Math.max(0, limit - group.total) : 0;
     },
 
     freePct(group) {
-      return this.free_from ? Math.min(100, Math.round((group.total / this.freeLimit(group)) * 100)) : 0;
+      const limit = this.freeLimit(group);
+      return limit ? Math.min(100, Math.round((group.total / limit) * 100)) : 0;
     },
 
     meta(item) {
