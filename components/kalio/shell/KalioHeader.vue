@@ -278,8 +278,11 @@
         <p class="k-eyebrow k-drawer__label">Categories</p>
         <router-link :to="dealsRoute" class="k-drawer__link -deals" @click="menu = false"><v-icon size="20">local_offer</v-icon>Deals</router-link>
         <router-link :to="newRoute" class="k-drawer__link" @click="menu = false"><v-icon size="20">fiber_new</v-icon>New arrivals</router-link>
+        <!-- The aisles: the first six in the shop's order, then "Show N
+             more" (the owner's choice A, 10 November 2026). The rest open in
+             place under the six; eight or fewer are all shown, no button. -->
         <router-link
-          v-for="aisle in aisleList"
+          v-for="aisle in menuAislesShown"
           :key="aisle.id"
           :to="aisleRoute(aisle)"
           class="k-drawer__link"
@@ -290,6 +293,35 @@
           </span>
           {{ aisle.title || aisle.name }}
         </router-link>
+        <template v-if="menuAislesMore.length">
+          <div id="k-menu-more" :class="{ '-open': menu_more }" :inert="!menu_more" class="k-drawer__more">
+            <div>
+              <router-link
+                v-for="(aisle, i) in menuAislesMore"
+                :key="aisle.id"
+                :style="{ transitionDelay: menu_more ? i * 20 + 'ms' : '0ms' }"
+                :to="aisleRoute(aisle)"
+                class="k-drawer__link"
+                @click="menu = false"
+              >
+                <span :style="{ '--k-tint': tint(aisle) }" class="k-drawer__ring">
+                  <img v-if="aisle.icon" :src="aisleImage(aisle, 64)" alt="" height="26" width="26" loading="lazy" />
+                </span>
+                {{ aisle.title || aisle.name }}
+              </router-link>
+            </div>
+          </div>
+          <button
+            :aria-expanded="menu_more ? 'true' : 'false'"
+            aria-controls="k-menu-more"
+            class="k-drawer__link k-drawer__more-btn"
+            type="button"
+            @click="menu_more = !menu_more"
+          >
+            <span aria-hidden="true" class="k-drawer__ring -more"><v-icon size="22">expand_more</v-icon></span>
+            {{ menu_more ? "Show fewer" : `Show ${menuAislesMore.length} more` }}
+          </button>
+        </template>
 
         <div class="k-drawer__pickers">
           <s-language-selector hide-details variant="outlined"></s-language-selector>
@@ -344,6 +376,7 @@ export default {
       aisles_open: false,
       basket: false,
       menu: false,
+      menu_more: false,
       phone_search: false,
       windowWidth: window.innerWidth,
       sellerList: [],
@@ -406,6 +439,14 @@ export default {
     drawerOpen() {
       return this.basket || this.menu;
     },
+    /* The phone menu's aisles: six, then "Show N more"; eight or fewer
+       are all shown. */
+    menuAislesShown() {
+      return this.aisleList.length > 8 ? this.aisleList.slice(0, 6) : this.aisleList;
+    },
+    menuAislesMore() {
+      return this.aisleList.length > 8 ? this.aisleList.slice(6) : [];
+    },
   },
 
   watch: {
@@ -415,6 +456,10 @@ export default {
     },
     basket(open) {
       basketView.drawerOpen = open;
+    },
+    /* Each time the menu opens, the aisles start folded. */
+    menu(open) {
+      if (open) this.menu_more = false;
     },
     $route() {
       this.menu = false;

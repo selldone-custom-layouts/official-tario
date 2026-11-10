@@ -592,6 +592,75 @@ $k-header-strip: 46px;
     gap: 10px;
     padding: 18px 20px 28px;
   }
+
+  /* The phone menu's folded aisles (choice A): they open in place under
+     the six, the height and each row easing in, 20ms apart. */
+  &__more {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 260ms ease;
+
+    > div {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .k-drawer__link {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 200ms ease, transform 200ms ease, background-color 140ms ease;
+    }
+
+    &.-open {
+      grid-template-rows: 1fr;
+
+      .k-drawer__link {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  }
+
+  /* "Show N more" / "Show fewer": a row like the aisles (the chip in the
+     ring's place, so the words share their edge), bold in the brand ink. */
+  &__more-btn {
+    width: 100%;
+    margin: 0;
+    border: 0;
+    background: none;
+    color: var(--t-link) !important;
+    font-family: inherit;
+    font-weight: 700;
+    text-align: start;
+    cursor: pointer;
+
+    .k-drawer__ring.-more {
+      background: var(--k-green-soft);
+    }
+
+    .v-icon {
+      color: var(--t-link);
+      transition: transform 220ms ease;
+    }
+
+    &[aria-expanded="true"] .v-icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  /* A row's focus ring sits inside the row: the folded list clips. */
+  &.-menu .k-drawer__link:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--t-link);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__more,
+    &__more .k-drawer__link,
+    &__more-btn .v-icon {
+      transition: none !important;
+    }
+  }
 }
 
 /* ▆▆▆▆▆▆▆▆ Basket drawer (KalioBasketDrawer, design C) ▆▆▆▆▆▆▆▆ */
