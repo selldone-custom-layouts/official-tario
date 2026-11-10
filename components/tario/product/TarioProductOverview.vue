@@ -76,7 +76,7 @@
                 {{ wayNote(way) }}
                 <template v-if="way.free"> Free.</template>
                 <template v-else-if="way.freeOver">
-                  Free on orders over <u-price :amount="way.freeOver" :currency="way.currency" />.</template
+                  Free on orders over <span class="u--price">{{ money(way.freeOver, way.currency, { short: "auto" }) }}</span>.</template
                 >
               </span>
             </p>
@@ -250,6 +250,7 @@
 import KalioProductOverview from "../../kalio/product/KalioProductOverview.vue";
 import KalioQuickBuy from "../../kalio/KalioQuickBuy.vue";
 import { waysOf } from "../tario-home";
+import { currentCurrency, money } from "../../region-switcher/region";
 import { aisles, dropSrcset, priceOf, productImage, productSrcset } from "../../kalio/kalio-catalog";
 import { basketLine, hasSizes, quickAdd } from "../../kalio/kalio-basket";
 
@@ -307,7 +308,7 @@ export default {
       return this.selected_vendor_product?.vendor?.name || null;
     },
     currency() {
-      return this.GetUserSelectedCurrency()?.code;
+      return currentCurrency(); // the shopper's, reactive: redraws at once on a pick
     },
     /* The merchant's highlights (pros) when there are any, else the first
        group of the product's spec ("At a Glance"). */
@@ -364,6 +365,7 @@ export default {
   },
 
   methods: {
+    money,
     dropSrcset,
     wayNote(way) {
       return NOTES[way.key] || way.line + ".";

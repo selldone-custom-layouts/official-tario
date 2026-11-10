@@ -20,7 +20,7 @@
           <b>{{ way.word }}</b>
           <span class="t-way__line">{{ way.line }}</span>
           <em v-if="way.free">Free</em>
-          <em v-else-if="way.freeOver">Free on orders over <u-price :amount="way.freeOver" :currency="way.currency" /></em>
+          <em v-else-if="way.freeOver">Free on orders over <span class="u--price">{{ money(way.freeOver, way.currency, { short: "auto" }) }}</span></em>
         </span>
       </li>
     </ul>
@@ -29,6 +29,7 @@
 
 <script>
 import { waysOf } from "./tario-home";
+import { money } from "../region-switcher/region";
 
 export default {
   name: "TarioWays",
@@ -38,6 +39,11 @@ export default {
     ways() {
       return waysOf(this.$shop).slice(0, 4);
     },
+  },
+
+  methods: {
+    /* The way's threshold, in the shopper's currency. */
+    money,
   },
 };
 </script>

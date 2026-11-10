@@ -105,7 +105,7 @@
                 <span
                   ><b>{{ w.word }}</b> — {{ w.line }}.
                   <template v-if="w.free">Free.</template>
-                  <template v-else-if="w.freeOver">Free on orders over <u-price :amount="w.freeOver" :currency="w.currency" />.</template>
+                  <template v-else-if="w.freeOver">Free on orders over <span class="u--price">{{ money(w.freeOver, w.currency, { short: "auto" }) }}</span>.</template>
                 </span>
               </li>
             </ul>
@@ -161,6 +161,7 @@ import NotificationService from "@selldone/components-vue/plugins/notification/N
 import TarioProductOverview from "../../components/tario/product/TarioProductOverview.vue";
 import TarioRow from "../../components/tario/TarioRow.vue";
 import { waysOf } from "../../components/tario/tario-home";
+import { money } from "../../components/region-switcher/region";
 import { EventBus } from "@selldone/components-vue/utils/events/EventBus.ts";
 import SProductOverviewLoading from "@selldone/components-vue/storefront/product/overview/loading/SProductOverviewLoading.vue";
 
@@ -324,6 +325,7 @@ export default {
   },
 
   methods: {
+    money,
     askToSignIn() {
       EventBus.$emit("need-login", true);
     },

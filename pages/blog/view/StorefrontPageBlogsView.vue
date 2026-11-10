@@ -132,6 +132,7 @@
 </template>
 
 <script lang="ts">
+import { currentCurrency } from "../../../components/region-switcher/region";
 import CurrencyMixin from "@selldone/components-vue/mixin/currency/CurrencyMixin.ts";
 import SArticleComments from "@selldone/components-vue/article/comment/SArticleComments.vue";
 import SShopLogin from "@selldone/components-vue/storefront/login/SShopLogin.vue";
@@ -181,7 +182,7 @@ export default {
       return this.$shop?.title || "The shop";
     },
     currency() {
-      return this.GetUserSelectedCurrency().code;
+      return currentCurrency(); // the shopper's, reactive: redraws at once on a pick
     },
     blogId() {
       return this.$route.params.blog_id;

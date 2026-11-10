@@ -46,12 +46,12 @@
         <v-icon aria-hidden="true" size="26">local_shipping</v-icon>
         <div class="t-meter__t">
           <template v-if="free_left > 0">
-            Add <b><u-price :amount="free_left" :currency="basket.currency" /></b> more for <b class="-red">free shipping</b>
+            Add <b><span class="u--price">{{ money(free_left, free_currency) }}</span></b> more for <b class="-red">free shipping</b>
           </template>
           <template v-else><b>Free shipping</b> on this order</template>
           <div class="t-meter__bar"><i :style="{ width: free_pct + '%' }"></i></div>
         </div>
-        <span class="t-meter__rule">Free over <u-price :amount="free_from.amount" :currency="free_from.currency" /></span>
+        <span class="t-meter__rule">Free over <span class="u--price">{{ money(free_from.amount, free_from.currency, { short: "auto" }) }}</span></span>
       </div>
 
       <nav v-if="filtered_types.length > 1" aria-label="Baskets" class="k-cart__types">
@@ -136,7 +136,7 @@
                   <b>{{ w.word }}</b>
                   <small>{{ w.line }}</small>
                   <em v-if="w.free">Free</em>
-                  <em v-else-if="w.freeOver">Free on orders over <u-price :amount="w.freeOver" :currency="w.currency" /></em>
+                  <em v-else-if="w.freeOver">Free on orders over <span class="u--price">{{ money(w.freeOver, w.currency, { short: "auto" }) }}</span></em>
                   <em v-else class="-later">Price with your address</em>
                 </span>
               </button>
@@ -496,6 +496,7 @@ import KalioCartLines from "../../../components/kalio/checkout/KalioCartLines.vu
 import KalioOftenAdded from "../../../components/kalio/KalioOftenAdded.vue";
 import KalioAddressSheet from "../../../components/kalio/checkout/KalioAddressSheet.vue";
 import { freeShippingFrom, waysOf } from "../../../components/tario/tario-home";
+import { baseCurrency, convert, currentCurrency, money } from "../../../components/region-switcher/region";
 
 export default {
   name: "StorefrontPageBasketCart",
@@ -1017,11 +1018,22 @@ export default {
       if (this.bill) return Math.max(0, (this.bill.items_price || 0) - (this.bill.items_discount || 0));
       return (this.basket?.items || []).reduce((sum, item) => sum + (item.price || 0) * (item.count || 0), 0);
     },
+    /* The cart's own currency (the bill's, else the basket's), and the
+       shop's threshold converted into it, so the meter subtracts like from
+       like; money() then shows the rest in the shopper's currency. */
+    free_currency() {
+      return this.bill?.currency || this.basket?.currency || currentCurrency();
+    },
+    free_limit() {
+      if (!this.free_from) return 0;
+      const v = convert(this.free_from.amount, this.free_from.currency || baseCurrency(), this.free_currency);
+      return v == null ? this.free_from.amount : v;
+    },
     free_left() {
-      return this.free_from ? Math.max(0, this.free_from.amount - this.free_base) : 0;
+      return this.free_from ? Math.max(0, this.free_limit - this.free_base) : 0;
     },
     free_pct() {
-      return this.free_from ? Math.min(100, Math.round((this.free_base / this.free_from.amount) * 100)) : 0;
+      return this.free_from ? Math.min(100, Math.round((this.free_base / this.free_limit) * 100)) : 0;
     },
     detail_cards() {
       return (this.show_when ? 1 : 0) + (this.has_delivery ? 1 : 0) + 1;
@@ -1160,6 +1172,7 @@ export default {
    * ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
    */
   methods: {
+    money,
     ShadeColor,
 
     // ▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅ Kalio ▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅

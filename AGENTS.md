@@ -21,6 +21,15 @@ release commands merely because this shim exists. Apply publication rules in
 the owner's controlled clone, fork, or release branch.
 
 <!-- THEME:START -->
+## Language and currency (money and words)
+
+The visitor's currency and language come from Selldone; the switcher is `components/region-switcher/` (a shared package: do not edit the copy; its guide is `new-shop-kits/region-switcher/PORTING.md`). Desktop: a pill beside the account in the header; phone: a "Language & currency" row at the foot of the menu with a bottom sheet.
+
+- **Every amount** goes through `money(amount, currency)` from `components/region-switcher/region`: `amount` is in `currency` (a product's `currency`, a delivery way's `currency`, the basket's `currency`; omit it for the shop's base currency) and is shown in the visitor's currency, converted with the shop's rates. Never format with `$shop.currency` (it does not exist) or a fixed "USD". A threshold compared with a cart total is first converted into the cart's currency (`convert()`).
+- **Product prices** use `priceOf(shop, product, currentCurrency())` (`components/kalio/kalio-catalog.ts`).
+- **Words** live in `components/tario/i18n/en.ts` and are read with `t("key")` from `region-switcher/region`. To add a language the owner enabled in the shop, add `<code>.ts` with the same keys and register it in `components/tario/i18n/index.ts`.
+- **Check:** `SHOP=molino MENU='[aria-label="Menu"]' MEGA=".k-header__aisles" CART=".k-header__basket" CATEGORY="@a.t-circle" DEALS='/?filter={"only_has_discount":true}' node components/region-switcher/tools/currency-check.cjs <site> ".k-footer"` must print `TOTAL 0`.
+
 ## Theme (palette, brand colour, light or dark, the visitor switcher)
 
 When a merchant asks for a theme ("use the yellow theme", "my brand colour is #F5C400", "make it dark"), edit **one file only**: `components/tario/tario-theme.settings.ts`. Nothing else needs to change, and the colours are made readable automatically (buttons, links, header, dark mode).

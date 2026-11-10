@@ -141,3 +141,45 @@ h3,
 .k-pdp [style*="--k-tint"] {
   --k-tint: var(--k-well) !important;
 }
+
+/* ━━━━━━━━━━━━ Language and currency (components/region-switcher) ━━━━━━━━━━━━
+   The owner's choice B (10 November 2026): a small pill beside the account
+   in the white bar (desktop), a "Language & currency" row at the foot of the
+   phone menu with a bottom sheet. Tario's tokens feed the package's; the
+   theme switcher sets them per palette and mode, so light, dark and a custom
+   colour all follow. */
+:root {
+  --rs-ink: var(--k-ink);
+  --rs-muted: var(--k-muted);
+  --rs-line: var(--k-line-strong);
+  --rs-line-strong: var(--k-muted);
+  --rs-surface: var(--k-card);
+  --rs-accent: var(--t-link);
+  --rs-accent-soft: var(--k-green-soft);
+  --rs-on-accent: var(--t-on-brand);
+  --rs-btn: var(--k-green);
+  --rs-on-btn: var(--t-on-brand);
+  --rs-pill-ink: var(--k-ink);
+  --rs-pill-bg: color-mix(in srgb, var(--k-ink) 6%, transparent);
+  --rs-pill-bg-hover: color-mix(in srgb, var(--k-ink) 11%, transparent);
+  --rs-font: var(--k-body);
+}
+
+.k-header__acts .rs-pick {
+  margin-inline: 4px 6px;
+}
+
+.k-drawer__region {
+  margin-top: 10px;
+  padding: 8px 0 24px;
+  border-top: 1px solid var(--k-line);
+
+  .t-menu__region {
+    width: 100%;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+}

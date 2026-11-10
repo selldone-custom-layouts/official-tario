@@ -208,6 +208,7 @@
 </template>
 
 <script>
+import { currentCurrency } from "../../region-switcher/region";
 import UPrice from "@selldone/components-vue/ui/price/UPrice.vue";
 import CurrencyMixin from "@selldone/components-vue/mixin/currency/CurrencyMixin.ts";
 import { PriceHelper } from "@selldone/core-js/helper";
@@ -269,7 +270,7 @@ export default {
       return countOn(this.modelValue);
     },
     currency() {
-      return this.GetUserSelectedCurrency()?.code;
+      return currentCurrency(); // the shopper's, reactive: redraws at once on a pick
     },
     /* Selldone's price record, in the shopper's currency (as SCategoryFilter). */
     price_rows() {

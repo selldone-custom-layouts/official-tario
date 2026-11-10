@@ -2796,3 +2796,12 @@ $t-tablet: 1100px;
     margin-inline: -10px !important;
   }
 }
+
+/* Selldone's tax line on the product page adds "Free shipping (over $200)"
+   in the delivery way's own currency, unconverted (its u-price takes the
+   way's currency). Tario's delivery note under the ways already says it,
+   in the shopper's currency (money()), so Selldone's copy is not shown. */
+.t-pdp .s--product-section-tax .-shipping-box,
+.k-pdp .s--product-section-tax .-shipping-box {
+  display: none !important;
+}

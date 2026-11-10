@@ -42,7 +42,7 @@ Selldone's own basket, checkout, payments, vendor offers and orders keep working
 
 ## Highlights
 
-- **Header:** a red promo strip with the shop's own free-shipping rule, then the wordmark with its round red dot, **Categories**, Deals, New arrivals and **Sellers** menus, a wide search pill with a round red button, Sign in and the cart with its count.
+- **Header:** a red promo strip with the shop's own free-shipping rule, then the wordmark with its round red dot, **Categories**, Deals, New arrivals and **Sellers** menus, a wide search pill with a round red button, a language and currency pill (the shop's own currencies, every amount converted at once; on a phone a row in the menu), Sign in and the cart with its count.
 - **Home:**
   - a split hero that turns: the week's deals ("up to N% off", read live), what is new, and the fresh aisle;
   - "Shop by category" as rows of round pictures;

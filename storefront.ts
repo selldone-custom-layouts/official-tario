@@ -39,6 +39,8 @@ import "@selldone/components-vue/style/fonts/material-design-fonts/material-desi
 import "@selldone/components-vue/style/fonts/lang/fa/lang-fa-iransans.css";
 import { bootThemeSwitcher } from "./components/theme-switcher/theme-switcher";
 import { TARIO_THEME } from "./components/tario/tario-theme";
+import { bootRegion, defineMessages } from "./components/region-switcher/region";
+import { TARIO_MESSAGES } from "./components/tario/i18n";
 import "./components/kalio/kalio-fonts"; // Kalio typefaces, loaded by the app so they reach production
 import { PageHyper } from "@selldone/page-builder/PageHyperService.ts";
 import {SetupPageBuilder} from "@selldone/page-builder/page-builder.ts";
@@ -96,6 +98,12 @@ app.use(components);
 
 // ━━━ Storefront SDK (xapi) ━━━
 StorefrontSDK.Setup(); // Set up the Shop SDK.
+
+// The visitor's language and currency (the header pill and the phone menu's
+// row): Selldone's own state (window.$storefront.currency, setCurrentLanguage)
+// mirrored reactively, the shop's rates, and Tario's own words per language.
+defineMessages(TARIO_MESSAGES);
+bootRegion(store);
 
 // ━━━ Community SDK (capi) ━━━
 CapiCommunity.Setup(); // Setup community.

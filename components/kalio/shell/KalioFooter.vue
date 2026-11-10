@@ -28,15 +28,6 @@
           <router-link :to="{ path: '/' }" class="k-footer__mark -logo"><img :src="BRAND.mark" alt="" class="k-brand-mark" height="30" width="30" />{{ shopTitle }}</router-link>
           <p v-if="lede" class="k-footer__lede">{{ lede }}</p>
           <s-storefront-social-buttons class="k-footer__social"></s-storefront-social-buttons>
-          <div class="k-footer__pickers">
-            <s-language-selector hide-details variant="outlined"></s-language-selector>
-            <u-currency-selector
-              v-if="$shop.currencies && $shop.currencies.length > 1"
-              :shop="$shop"
-              hide-details
-              @change="onChangeUserSelectedCurrency"
-            />
-          </div>
         </div>
 
         <nav aria-labelledby="k-footer-shop" class="k-footer__col">
@@ -97,8 +88,6 @@
 <script>
 import { BRAND } from "../kalio-brand";
 import SStorefrontSocialButtons from "@selldone/components-vue/storefront/social/SStorefrontSocialButtons.vue";
-import SLanguageSelector from "@selldone/components-vue/storefront/language/selector/SLanguageSelector.vue";
-import UCurrencySelector from "@selldone/components-vue/ui/currency/selector/UCurrencySelector.vue";
 import SFooterSectionGdpr from "@selldone/components-vue/storefront/footer/section/gdpr/SFooterSectionGdpr.vue";
 import SFooterSectionSelldone from "@selldone/components-vue/storefront/footer/section/selldone/SFooterSectionSelldone.vue";
 import { EventBus } from "@selldone/components-vue/utils/events/EventBus.ts";
@@ -110,8 +99,6 @@ export default {
   name: "KalioFooter",
   components: {
     SStorefrontSocialButtons,
-    SLanguageSelector,
-    UCurrencySelector,
     SFooterSectionGdpr,
     SFooterSectionSelldone,
     ThemeSwitcherRow,

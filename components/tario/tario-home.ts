@@ -132,7 +132,10 @@ export function waysOf(shop: any): Way[] {
     if (known) {
       /* Two methods of one kind: the more generous free rule wins. */
       known.free = known.free || free;
-      if (freeOver != null && (known.freeOver == null || freeOver < known.freeOver)) known.freeOver = freeOver;
+      if (freeOver != null && (known.freeOver == null || freeOver < known.freeOver)) {
+        known.freeOver = freeOver;
+        known.currency = t.currency || null;
+      }
       continue;
     }
     out.push({
@@ -142,7 +145,7 @@ export function waysOf(shop: any): Way[] {
       line: kind ? kind.line : "Brought to your address",
       free,
       freeOver,
-      currency: t.currency || shop?.currency || null,
+      currency: t.currency || null, // the way's own; null = the shop's base currency
     });
   }
   /* In the order shoppers expect: pickup, delivery, shipping, post. */
@@ -161,5 +164,5 @@ export function freeShippingFrom(shop: any): { amount: number; currency: string 
   );
   if (!paid.length) return null;
   const best = paid.reduce((a: any, b: any) => (Number(b.free_shipping_limit) < Number(a.free_shipping_limit) ? b : a));
-  return { amount: Number(best.free_shipping_limit), currency: best.currency || shop?.currency };
+  return { amount: Number(best.free_shipping_limit), currency: best.currency || null };
 }

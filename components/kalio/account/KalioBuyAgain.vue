@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { currentCurrency } from "../../region-switcher/region";
 import CurrencyMixin from "@selldone/components-vue/mixin/currency/CurrencyMixin.ts";
 import { basketLine, pendingLine, quickAdd, shownCount } from "../kalio-basket";
 import { offers, priceOf, productImage } from "../kalio-catalog";
@@ -57,7 +58,7 @@ export default {
 
   computed: {
     currency() {
-      return this.GetUserSelectedCurrency()?.code;
+      return currentCurrency(); // the shopper's, reactive: redraws at once on a pick
     },
     products() {
       if (!this.catalogue.size) return [];
