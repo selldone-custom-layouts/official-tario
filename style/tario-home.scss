@@ -495,12 +495,12 @@ $t-tablet: 1100px;
     background: var(--k-green);
     color: var(--t-on-brand);
 
-    .t-hero__eyebrow {
-      color: #ffd0d0;
-    }
-
+    /* The words on the action colour take the on-brand colour: the pinks
+       they had (#ffd0d0, #ffe3e3) read 3.7-4.3:1 on the red slide, and on
+       a lighter dark-mode or custom primary less. */
+    .t-hero__eyebrow,
     .t-hero__lede {
-      color: #ffe3e3;
+      color: var(--t-on-brand);
     }
 
     .t-btn.-main {
@@ -1459,6 +1459,25 @@ a:hover > .t-photo .t-photo__pack.-p1 {
 
   .s--footer-svg .fil1 {
     fill: var(--k-muted) !important;
+  }
+}
+
+/* The visitor's theme row (showcase only), a strip of its own just above
+   the legal row: the footer's hairline over it, its content on the
+   columns' left edge. The switch outline and a swatch's hover ring take the
+   muted grey (the footer's hairline grey reads 1.2:1, under the 3:1 a
+   control's edge needs), light and dark. */
+.k-footer__theme {
+  --ts-ink: var(--k-ink);
+  --ts-muted: var(--k-muted);
+  --ts-line: var(--k-muted);
+
+  margin-top: 44px;
+  padding-block: 16px;
+  border-top: 1px solid var(--k-line);
+
+  + .k-footer__base {
+    margin-top: 0;
   }
 }
 

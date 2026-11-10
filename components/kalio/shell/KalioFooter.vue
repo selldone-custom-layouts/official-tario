@@ -73,6 +73,14 @@
         </nav>
       </div>
 
+      <!-- The visitor's theme: palettes, a free Custom colour and Light /
+           Dark, in a strip of its own just above the legal row (the owner,
+           10 November 2026: the footer, not the header). Only on the
+           showcase shop; elsewhere the strip is not rendered. -->
+      <div v-if="themeOn" class="k-wrap k-footer__theme">
+        <theme-switcher-row />
+      </div>
+
       <div class="k-wrap k-footer__base">
         <span>© {{ year }} {{ shopTitle }}</span>
         <span class="k-footer__base-links">
@@ -94,6 +102,8 @@ import UCurrencySelector from "@selldone/components-vue/ui/currency/selector/UCu
 import SFooterSectionGdpr from "@selldone/components-vue/storefront/footer/section/gdpr/SFooterSectionGdpr.vue";
 import SFooterSectionSelldone from "@selldone/components-vue/storefront/footer/section/selldone/SFooterSectionSelldone.vue";
 import { EventBus } from "@selldone/components-vue/utils/events/EventBus.ts";
+import ThemeSwitcherRow from "../../theme-switcher/ThemeSwitcherRow.vue";
+import { themeState } from "../../theme-switcher/theme-switcher";
 import { aisleRoute, aisles, catalogueRoute, dealsRoute, sellerRoute, vendorImage, vendors } from "../kalio-catalog";
 
 export default {
@@ -104,6 +114,7 @@ export default {
     UCurrencySelector,
     SFooterSectionGdpr,
     SFooterSectionSelldone,
+    ThemeSwitcherRow,
   },
   inject: ["$shop"],
 
@@ -118,6 +129,9 @@ export default {
   },
 
   computed: {
+    themeOn() {
+      return themeState.enabled;
+    },
     shopTitle() {
       return this.$shop?.title || "Kalio";
     },

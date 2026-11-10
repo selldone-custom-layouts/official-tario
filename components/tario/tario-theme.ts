@@ -1,7 +1,7 @@
 /*
- * Tario — the theme switcher's config (the header's "Theme" button: the
- * owner's rule of 9 November 2026, the same on every molino Layout as on
- * Digito and Besti).
+ * Tario — the theme switcher's config (the footer's "Theme" row since
+ * 10 November 2026, the header button before: the same on every molino
+ * Layout as on Digito and Besti).
  *
  * The switcher itself is Layout-agnostic (components/theme-switcher/); this
  * file is everything Tario-specific: the palettes, which Kalio variables

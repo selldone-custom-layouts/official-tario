@@ -54,7 +54,7 @@ try {
   /* keep Vuetify's */
 }
 
-// The shopper's palette and Light / Dark (the header's Theme button), painted
+// The shopper's palette and Light / Dark (the footer's Theme row), painted
 // before the first paint so the default never flashes. Only on the showcase
 // shop (molino): an imported copy never shows it.
 bootThemeSwitcher(TARIO_THEME, vuetify);

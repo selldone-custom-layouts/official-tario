@@ -102,7 +102,7 @@ export default ({mode}: any) => {
     ],
     /* Dark mode for every fixed colour in the Layout's styles and Selldone's
        components: each light literal becomes var(--tsd-…, literal), with the
-       dark values under html.tr-dark (the header's Theme button sets the
+       dark values under html.tr-dark (the footer's Theme row sets the
        class). Light mode computes exactly as before. Vuetify follows its own
        theme. */
     css: {

@@ -93,10 +93,10 @@ Choose Tario's colours in one file, `components/tario/tario-theme.settings.ts`:
 
 You can also tell your AI agent "use the yellow theme" or "make it dark": `AGENTS.md` (section "Theme") tells it what to change. Then build and upload. See the wiki page [Theme and colours](https://github.com/selldone-custom-layouts/official-tario/wiki/Theme-and-colours).
 
-The header's Theme button (palettes, Custom colour, Light / Dark) is a showcase feature. It shows only on Tario's own showcase shop (molino, Selldone shop 15645), so when you import Tario into your shop, your shoppers see Tario in its designed colours, with no Theme button. The Layout looks exactly as it does without the switcher, and any stored choice is ignored. To offer the switcher to your shoppers, set `themeSwitcher: "on"` in `components/tario/tario-theme.settings.ts`, then build and upload. `themeSwitcher: "off"` hides it everywhere.
+The footer's Theme row (palettes, Custom colour, Light / Dark, just above the © line) is a showcase feature. It shows only on Tario's own showcase shop (molino, Selldone shop 15645), so when you import Tario into your shop, your shoppers see Tario in its designed colours, with no Theme row. The Layout looks exactly as it does without the switcher, and any stored choice is ignored. To offer the switcher to your shoppers, set `themeSwitcher: "on"` in `components/tario/tario-theme.settings.ts`, then build and upload. `themeSwitcher: "off"` hides it everywhere.
 <!-- THEME:END -->
 
-<p><img src="docs/screenshots/desktop-theme-panel.jpg" alt="The Theme panel in the header: palettes, Custom colour, Light and Dark" width="62%"> <img src="docs/screenshots/phone-home-dark.jpg" alt="Tario in dark mode on a phone" width="18%"></p>
+<p><img src="docs/screenshots/desktop-theme-footer.jpg" alt="The Theme row in the footer: palettes, Custom colour, Light and Dark" width="62%"> <img src="docs/screenshots/phone-home-dark.jpg" alt="Tario in dark mode on a phone" width="18%"></p>
 
 <img src="docs/screenshots/desktop-home-dark.jpg" alt="Tario in dark mode on a computer" width="62%">
 

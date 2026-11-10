@@ -166,15 +166,6 @@
             </button>
           </template>
 
-          <!-- The visitor's theme: palettes, a free Custom colour and Light /
-               Dark, after the account and just before the cart (the owner's
-               rule, 9 November 2026, on every molino Layout). Only on molino,
-               the showcase shop (an imported copy never shows it). -->
-          <theme-switcher-button :button-class="compact ? 'k-header__icon -theme' : 'k-header__link -theme'">
-            <v-icon :size="compact ? 24 : 20">palette</v-icon>
-            <span v-if="!compact" class="k-header__word">Theme</span>
-          </theme-switcher-button>
-
           <button
             :aria-label="`Cart, ${itemsCount} items`"
             class="k-header__basket"
@@ -321,7 +312,6 @@ import SStorefrontSearchBox from "@selldone/components-vue/storefront/search/SSt
 import SLanguageSelector from "@selldone/components-vue/storefront/language/selector/SLanguageSelector.vue";
 import UCurrencySelector from "@selldone/components-vue/ui/currency/selector/UCurrencySelector.vue";
 import KalioBasketDrawer from "./KalioBasketDrawer.vue";
-import ThemeSwitcherButton from "../../theme-switcher/ThemeSwitcherButton.vue";
 import { EventBus } from "@selldone/components-vue/utils/events/EventBus.ts";
 import { aisleImage, aisleRoute, aisles, catalogueRoute, dealsRoute, sellerRoute, tintFor, vendorImage, vendors } from "../kalio-catalog";
 import { freeShippingFrom } from "../../tario/tario-home";
@@ -334,7 +324,6 @@ export default {
     SLanguageSelector,
     UCurrencySelector,
     KalioBasketDrawer,
-    ThemeSwitcherButton,
     SHeaderSectionUser: defineAsyncComponent(
       () => import("@selldone/components-vue/storefront/header/section/user/SHeaderSectionUser.vue"),
     ),

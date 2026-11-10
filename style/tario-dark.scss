@@ -1,7 +1,7 @@
 /* ▆▆▆▆▆▆▆▆▆▆▆▆▆▆ Tario — dark mode, and the theme switcher's loose ends ▆▆▆▆▆▆▆▆▆▆▆▆▆▆
 
-   The theme switcher (components/tario/tario-theme.ts, the header's Theme
-   button) turns the page dark by tokens and by the build step that gives
+   The theme switcher (components/tario/tario-theme.ts, the footer's Theme
+   row) turns the page dark by tokens and by the build step that gives
    every fixed colour a dark value (postcss-dark-tokens). This file holds
    what neither can know. Loaded last (storefront.scss); the build step
    leaves rules that name html.tr-dark alone. */
@@ -38,6 +38,20 @@ html .text-red {
 }
 
 html.tr-dark {
+  /* The empty cart's "Or start with an aisle" chips sit on the aisle's
+     pastel (--k-tint, set inline and kept light by the build step) while
+     their words take the ink, which turns light: white on a pastel (the
+     owner saw it on Walio, 10 November 2026). In dark mode a chip takes a
+     dark tint of the same hue, so the light words read on it. */
+  .k-aisle-chip:not(.-on) {
+    background: color-mix(in oklab, var(--k-tint) 16%, var(--k-card)) !important;
+    color: var(--k-ink) !important;
+
+    &:hover {
+      background: color-mix(in oklab, var(--k-tint) 26%, var(--k-card)) !important;
+    }
+  }
+
   /* The empty cart's drawing is a dark line SVG (Selldone's baskets.svg):
      light lines on the dark page. */
   .k-basket-empty__art {
