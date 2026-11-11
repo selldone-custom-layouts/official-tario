@@ -63,3 +63,13 @@
   ) {
   unicode-bidi: plaintext;
 }
+
+/* Signed numbers stay one left-to-right piece on a right-to-left page
+   (Walio's lesson, 11 November 2026): "-20%" on a card's deal tag and in
+   the compare table (not "20%-"), "+3" on a row of order thumbnails (not
+   "3+"), the minus before an amount on the cart's, drawer's and order's
+   receipt rows ("−4.00 US$", the minus at its start). */
+:is(.t-card__tag, .k-cmp__off, .k-board__thumb.-more, .k-mtile__sticker strong, .discount-percent, .k-signed) {
+  direction: ltr;
+  unicode-bidi: isolate;
+}

@@ -74,7 +74,7 @@
         <span>{{ t("tario.drawer.items", "Items ({n})", { n: group.units }) }}</span><span class="u--price">{{ money(group.total + group.saved, group.currency) }}</span>
       </p>
       <p v-if="group.saved >= 0.01" class="t-bdrawer__row -save">
-        <span>{{ t("basket.receipt.youSave", "You save") }}</span><span>−<span class="u--price">{{ money(group.saved, group.currency) }}</span></span>
+        <span>{{ t("basket.receipt.youSave", "You save") }}</span><span class="k-signed">−<span class="u--price">{{ money(group.saved, group.currency) }}</span></span>
       </p>
       <p class="t-bdrawer__row -tot">
         <span>{{ t("tario.drawer.subtotal", "Subtotal") }}</span><span class="u--price">{{ money(group.total, group.currency) }}</span>

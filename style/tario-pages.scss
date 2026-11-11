@@ -575,6 +575,11 @@ $t-tablet: 1100px;
   max-width: 100vw;
   box-shadow: -18px 0 44px -18px rgba(0, 0, 0, 0.35);
 
+  /* Right to left the panel sits on the left: its shadow falls on the page. */
+  [dir="rtl"] & {
+    box-shadow: 18px 0 44px -18px rgba(0, 0, 0, 0.35);
+  }
+
   @media (max-width: $t-phone) {
     top: 48px;
     inset-inline-start: 0;
