@@ -2127,8 +2127,7 @@ button.k-compare-fab.s--storefront-products-comparison-circle-progress {
 
     &:hover {
       color: var(--k-ink) !important;
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      text-decoration: none;
     }
 
     &.-on {
@@ -2155,8 +2154,7 @@ button.k-compare-fab.s--storefront-products-comparison-circle-progress {
 }
 
 .k-prose a {
-  text-decoration: underline !important;
-  text-underline-offset: 3px;
+  text-decoration: none !important;
 }
 
 /* Words inside a link or a button (an em, a span) carry no line either: the

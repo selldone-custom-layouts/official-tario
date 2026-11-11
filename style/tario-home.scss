@@ -48,8 +48,7 @@ $t-tablet: 1100px;
     flex: none;
     color: var(--t-on-brand) !important;
     font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    text-decoration: none;
   }
 
   @media (max-width: $t-phone) {
@@ -307,8 +306,8 @@ $t-tablet: 1100px;
     white-space: nowrap;
 
     &:hover {
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      color: var(--k-ink) !important;
+      text-decoration: none;
     }
   }
 
@@ -759,8 +758,8 @@ a:hover > .t-photo .t-photo__pack.-p1 {
   }
 
   &:hover &__name {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    color: var(--t-link) !important;
+    text-decoration: none;
   }
 
   @media (max-width: $t-phone) {
@@ -928,8 +927,8 @@ a:hover > .t-photo .t-photo__pack.-p1 {
     -webkit-box-orient: vertical;
 
     &:hover {
-      text-decoration: underline;
-      text-underline-offset: 2px;
+      color: var(--t-link) !important;
+      text-decoration: none;
     }
   }
 
@@ -1100,11 +1099,11 @@ a:hover > .t-photo .t-photo__pack.-p1 {
     }
 
     u {
+      text-decoration: none;
       display: inline-block;
       margin-top: 8px;
       font-size: 14px;
       font-weight: 700;
-      text-underline-offset: 3px;
     }
   }
 
@@ -1113,7 +1112,7 @@ a:hover > .t-photo .t-photo__pack.-p1 {
   }
 
   &:hover &__cap u {
-    text-decoration-thickness: 2px;
+    color: #ffd6d6;
   }
 
   @media (max-width: $t-phone) {
@@ -1335,10 +1334,10 @@ a:hover > .t-photo .t-photo__pack.-p1 {
     }
 
     u {
+      text-decoration: none;
       color: var(--t-link);
       font-size: 14px;
       font-weight: 700;
-      text-underline-offset: 3px;
     }
   }
 

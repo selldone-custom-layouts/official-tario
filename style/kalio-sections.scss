@@ -601,8 +601,7 @@ html[dir="rtl"] .k-flip,
 
 a.k-by:hover {
   color: var(--t-link) !important;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
 }
 
 /* ▆▆▆▆▆▆▆▆ Aisle mosaic ▆▆▆▆▆▆▆▆
@@ -1137,8 +1136,8 @@ $k-shelf-pic-phone: 150px;
     text-decoration: none;
 
     &:hover .k-shelf__name {
-      text-decoration: underline;
-      text-underline-offset: 2px;
+      color: var(--t-link) !important;
+      text-decoration: none;
     }
   }
 
@@ -1168,7 +1167,6 @@ $k-shelf-pic-phone: 150px;
       font-family: var(--k-body);
       font-size: 12.5px;
       font-weight: 500;
-      text-decoration-thickness: 1.5px;
     }
   }
 
@@ -1488,8 +1486,8 @@ $k-shelf-pic-phone: 150px;
       text-decoration: none;
 
       &:hover {
-        text-decoration: underline;
-        text-underline-offset: 3px;
+        color: var(--k-ink) !important;
+        text-decoration: none;
       }
     }
 
@@ -1938,7 +1936,8 @@ $k-shelf-pic-phone: 150px;
       text-decoration: none;
 
       &:hover {
-        text-decoration: underline;
+        color: var(--k-ink) !important;
+        text-decoration: none;
       }
     }
 

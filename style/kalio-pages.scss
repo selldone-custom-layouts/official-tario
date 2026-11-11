@@ -177,8 +177,7 @@
 
   a:not(.k-btn) {
     color: var(--t-link) !important;
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    text-decoration: none;
   }
 
   img {
@@ -448,9 +447,8 @@
   text-decoration: none;
 
   &:hover .k-jentry__title {
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 4px;
+    color: var(--t-link) !important;
+    text-decoration: none;
   }
 
   &__date {
@@ -620,8 +618,8 @@
       text-decoration: none;
 
       &:hover {
-        text-decoration: underline;
-        text-underline-offset: 3px;
+        color: var(--t-link) !important;
+        text-decoration: none;
       }
     }
   }
@@ -732,7 +730,8 @@
     -webkit-box-orient: vertical;
 
     &:hover {
-      text-decoration: underline;
+      color: var(--t-link) !important;
+      text-decoration: none;
     }
   }
 }
@@ -961,8 +960,8 @@
     text-decoration: none;
 
     &:hover .k-post__cardtitle {
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      color: var(--t-link) !important;
+      text-decoration: none;
     }
   }
 

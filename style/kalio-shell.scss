@@ -838,8 +838,8 @@ $k-header-strip: 46px;
     }
 
     &:hover span {
-      text-decoration: underline;
-      text-underline-offset: 2px;
+      color: var(--t-link) !important;
+      text-decoration: none;
     }
   }
 
@@ -1106,8 +1106,7 @@ $k-header-strip: 46px;
 
       &:hover {
         color: #fff !important;
-        text-decoration: underline;
-        text-underline-offset: 3px;
+        text-decoration: none;
       }
     }
 
@@ -2159,8 +2158,7 @@ $k-filter-gap: 36px;
   a {
     color: var(--t-link) !important;
     font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 2px;
+    text-decoration: none;
   }
 }
 

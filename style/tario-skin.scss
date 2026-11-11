@@ -183,3 +183,10 @@ h3,
     cursor: pointer;
   }
 }
+
+/* No line under any word (the owner's standing rule, every shop): the <u>
+   words inside a link ("Shop now" on the tiles, "Shop <aisle>" on the finds,
+   "Visit shop" on the sellers) draw none either; they are links by colour. */
+:where(a, button, [role="button"], [role="link"]) u {
+  text-decoration: none !important;
+}

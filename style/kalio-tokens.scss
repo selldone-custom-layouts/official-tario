@@ -271,8 +271,8 @@ s:has(> .u--price) {
   text-decoration: none;
 
   &:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    color: var(--k-ink) !important;
+    text-decoration: none;
   }
 }
 
