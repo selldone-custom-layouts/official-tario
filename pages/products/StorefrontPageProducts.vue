@@ -89,16 +89,16 @@
           :filters="filters_def"
           :model-value="t_filter"
           :sort="t_sort"
-          :sort-fallback="category_name || vendor_id ? 'Featured' : 'Best match'"
+          :sort-fallback="category_name || vendor_id ? t('tario.sort.featured', 'Featured') : t('tario.sort.bestMatch', 'Best match')"
           @update:model-value="setFilter"
           @update:sort="setSort"
         />
         <div class="t-resline">
           <span v-if="catalogue_total !== null"
-            ><b>{{ catalogue_total.toLocaleString() }} {{ catalogue_total === 1 ? "result" : "results" }}</b
-            ><template v-if="on_sale"> · {{ on_sale.toLocaleString() }} on sale</template></span
+            ><b>{{ t("tario.search.results", { one: "{n} result", other: "{n} results" }, { n: catalogue_total }) }}</b
+            ><template v-if="on_sale"> · {{ t("tario.search.onSale", "{n} on sale", { n: on_sale }) }}</template></span
           >
-          <span v-if="sold_by" class="t-resline__by">{{ sold_by }}</span>
+          <span v-if="sold_by" class="t-resline__by">{{ sold_by.length > 2 ? t("tario.search.soldByMany", "Sold by {n} sellers", { n: sold_by.length }) : sold_by.length === 2 ? t("tario.search.soldByTwo", "Sold by {a} and {b}", { a: sold_by[0], b: sold_by[1] }) : t("tario.search.soldByOne", "Sold by {a}", { a: sold_by[0] }) }}</span>
         </div>
       </div>
 
@@ -133,10 +133,10 @@
           :limit="12"
           lazy
           sort="bestselling"
-          title="Popular right now"
+          :title="t('tario.search.popular', 'Popular right now')"
         />
         <section v-if="more_aisles.length" class="t-keep">
-          <h2 class="t-keep__h">Keep shopping</h2>
+          <h2 class="t-keep__h">{{ t("basket.keepShopping", "Keep shopping") }}</h2>
           <div class="t-keep__list">
             <router-link v-for="a in more_aisles" :key="a.id" :to="aisleTo(a)">{{ a.title || a.name }}</router-link>
           </div>
@@ -408,7 +408,7 @@ export default {
           .filter((v) => (shelfOf.get(v.id) || []).some((p) => p.category_id === aisle.id))
           .map((v) => v.name);
         if (!names.length) return;
-        this.sold_by = "Sold by " + (names.length > 2 ? `${names.length} sellers` : names.join(" and "));
+        this.sold_by = names; // the words are drawn at render, in the visitor's language
       });
     },
   },

@@ -22,6 +22,7 @@
  */
 import type { ThemeSwitcherConfig } from "../theme-switcher/theme-switcher";
 import { THEME_SETTINGS } from "./tario-theme.settings";
+import { t } from "../kalio/i18n/kalio-i18n";
 
 /* Plain hex mixes (not color-mix), so the audits can measure them. */
 const mix = (c: string, pct: number, base: string): string => {
@@ -47,31 +48,41 @@ export const TARIO_THEME: ThemeSwitcherConfig = {
   palettes: [
     {
       id: "red",
-      name: "Tario red",
+      get name() {
+        return t("tario.palette.red", "Tario red");
+      },
       light: { primary: "#cc0000", deep: "#a30000", lift: "#e01b1b", soft: "#fdeeee", onPrimary: "#ffffff", text: "#cc0000" },
       dark: { primary: "#d42a2a", deep: "#a30000", lift: "#e04848", soft: "#3d1a1a", onPrimary: "#ffffff", text: "#ff8a8a" },
     },
     {
       id: "blue",
-      name: "Ocean blue",
+      get name() {
+        return t("tario.palette.blue", "Ocean blue");
+      },
       light: { primary: "#0a4bd8", deep: "#0838a8", lift: "#2563eb", soft: "#e8efff", onPrimary: "#ffffff", text: "#0a4bd8" },
       dark: { primary: "#2563eb", deep: "#1d4ed8", lift: "#3b82f6", soft: "#16264d", onPrimary: "#ffffff", text: "#8fb0ff" },
     },
     {
       id: "green",
-      name: "Green",
+      get name() {
+        return t("tario.palette.green", "Green");
+      },
       light: { primary: "#05664a", deep: "#064e3b", lift: "#047857", soft: "#e3f6ee", onPrimary: "#ffffff", text: "#05664a" },
       dark: { primary: "#047857", deep: "#065f46", lift: "#059669", soft: "#123a30", onPrimary: "#ffffff", text: "#6ee7b7" },
     },
     {
       id: "violet",
-      name: "Violet",
+      get name() {
+        return t("tario.palette.violet", "Violet");
+      },
       light: { primary: "#6d28d9", deep: "#5b21b6", lift: "#7c3aed", soft: "#efe8fd", onPrimary: "#ffffff", text: "#6d28d9" },
       dark: { primary: "#8046ee", deep: "#6d28d9", lift: "#8b5cf6", soft: "#2a1d4d", onPrimary: "#ffffff", text: "#c4b5fd" },
     },
     {
       id: "teal",
-      name: "Teal",
+      get name() {
+        return t("tario.palette.teal", "Teal");
+      },
       light: { primary: "#0c6680", deep: "#164e63", lift: "#0e7490", soft: "#e0f4f8", onPrimary: "#ffffff", text: "#0c6680" },
       dark: { primary: "#0e7490", deep: "#155e75", lift: "#0891b2", soft: "#123540", onPrimary: "#ffffff", text: "#67e8f9" },
     },
@@ -139,7 +150,36 @@ export const TARIO_THEME: ThemeSwitcherConfig = {
 
   metaThemeColor: "light.primary",
   ui: { ink: "var(--k-ink)", muted: "var(--k-muted)", line: "var(--k-line)", surface: "var(--k-card)", font: "var(--k-body)" },
-  labels: { theme: "Theme", palettes: "Colour", mode: "Light or dark", modeTitle: "Mode", light: "Light", dark: "Dark", custom: "Custom colour", adjusted: "Adjusted for readability", brand: "Brand colour" },
+  /* Getters: the words follow the visitor's language (kalio-i18n). */
+  labels: {
+    get theme() {
+      return t("theme.title", "Theme");
+    },
+    get palettes() {
+      return t("theme.palettes", "Colour");
+    },
+    get mode() {
+      return t("theme.mode", "Light or dark");
+    },
+    get modeTitle() {
+      return t("theme.modeTitle", "Mode");
+    },
+    get light() {
+      return t("theme.light", "Light");
+    },
+    get dark() {
+      return t("theme.dark", "Dark");
+    },
+    get custom() {
+      return t("theme.custom", "Custom colour");
+    },
+    get adjusted() {
+      return t("theme.adjusted", "Adjusted for readability");
+    },
+    get brand() {
+      return t("theme.brand", "Brand colour");
+    },
+  },
 
   /* "Custom colour" (the owner, 9 November 2026): any colour, made readable
      by paletteFromColor(). Tario's bands carry pale words on the action

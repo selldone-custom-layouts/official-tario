@@ -11,7 +11,7 @@
 <template>
   <section v-if="ways.length" aria-labelledby="t-ways" class="t-sec k-wrap">
     <header class="t-sec__head">
-      <h2 id="t-ways" class="t-sec__title">Ways to get it</h2>
+      <h2 id="t-ways" class="t-sec__title">{{ t("tario.ways.title", "Ways to get it") }}</h2>
     </header>
     <ul :class="'-n' + Math.min(ways.length, 4)" class="t-ways">
       <li v-for="way in ways" :key="way.key" class="t-way">
@@ -19,8 +19,8 @@
         <span class="t-way__text">
           <b>{{ way.word }}</b>
           <span class="t-way__line">{{ way.line }}</span>
-          <em v-if="way.free">Free</em>
-          <em v-else-if="way.freeOver && moneyIfKnown(way.freeOver, way.currency)">Free on orders over <span class="u--price">{{ moneyIfKnown(way.freeOver, way.currency, { short: "auto" }) }}</span></em>
+          <em v-if="way.free">{{ t("shipping.free", "Free") }}</em>
+          <em v-else-if="way.freeOver && moneyIfKnown(way.freeOver, way.currency)">{{ t("tario.ways.freeOver", "Free on orders over {amount}", { amount: moneyIfKnown(way.freeOver, way.currency, { short: "auto" }) }) }}</em>
         </span>
       </li>
     </ul>

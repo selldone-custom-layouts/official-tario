@@ -14,12 +14,12 @@
 -->
 <template>
   <div class="t-sellerpage">
-    <nav aria-label="Breadcrumb" class="t-crumbs">
+    <nav :aria-label="t('tario.crumbs', 'Breadcrumb')" class="t-crumbs">
       <router-link :to="{ name: window.$storefront.routes.SHOP_PAGE }">{{ $shop.title }}</router-link>
       <v-icon aria-hidden="true" size="16">chevron_right</v-icon>
-      <span>Sellers</span>
+      <span>{{ t("footer.sellers", "Sellers") }}</span>
       <v-icon aria-hidden="true" size="16">chevron_right</v-icon>
-      <span aria-current="page">{{ vendor ? vendor.name : "Seller" }}</span>
+      <span aria-current="page">{{ vendor ? vendor.name : t("tario.seller.seller", "Seller") }}</span>
     </nav>
 
     <section class="t-sban">
@@ -31,34 +31,34 @@
         </span>
         <div class="t-sban__who">
           <h1>{{ vendor ? vendor.name : "" }}</h1>
-          <p>An independent seller on {{ $shop.title }}<template v-if="sells_line"> · {{ sells_line }}</template></p>
+          <p>{{ t("tario.seller.independent", "An independent seller on {shop}", { shop: $shop.title }) }}<template v-if="sells_line"> · {{ sells_line }}</template></p>
         </div>
         <div class="t-sban__facts">
-          <div v-if="total !== null"><b>{{ total.toLocaleString() }}</b><span>{{ total === 1 ? "product" : "products" }}</span></div>
-          <div v-if="aisleTiles.length"><b>{{ aisleTiles.length }}</b><span>{{ aisleTiles.length === 1 ? "aisle" : "aisles" }}</span></div>
-          <div v-if="on_sale !== null"><b>{{ on_sale.toLocaleString() }}</b><span>on sale</span></div>
+          <div v-if="total !== null"><b>{{ formatNumber(total) }}</b><span>{{ t("tario.seller.productsWord", { one: "product", other: "products" }, { n: total }) }}</span></div>
+          <div v-if="aisleTiles.length"><b>{{ formatNumber(aisleTiles.length) }}</b><span>{{ t("tario.seller.aislesWord", { one: "aisle", other: "aisles" }, { n: aisleTiles.length }) }}</span></div>
+          <div v-if="on_sale !== null"><b>{{ formatNumber(on_sale) }}</b><span>{{ t("tario.seller.onSale", "on sale") }}</span></div>
         </div>
       </div>
     </section>
 
-    <nav aria-label="Seller sections" class="t-stabs">
-      <button :class="{ '-on': tab === 'shop' }" type="button" @click="$emit('tab', 'shop')">Shop</button>
+    <nav :aria-label="t('tario.seller.sections', 'Seller sections')" class="t-stabs">
+      <button :class="{ '-on': tab === 'shop' }" type="button" @click="$emit('tab', 'shop')">{{ t("tario.seller.tabShop", "Shop") }}</button>
       <button v-if="on_sale" :class="{ '-on': tab === 'deals' }" type="button" @click="$emit('tab', 'deals')">
-        Deals ({{ on_sale.toLocaleString() }})
+        {{ t("tario.seller.tabDeals", "Deals ({n})", { n: on_sale }) }}
       </button>
-      <button :class="{ '-on': tab === 'new' }" type="button" @click="$emit('tab', 'new')">New</button>
-      <button type="button" @click="toAbout">About {{ vendor ? vendor.name : "" }}</button>
+      <button :class="{ '-on': tab === 'new' }" type="button" @click="$emit('tab', 'new')">{{ t("tario.seller.tabNew", "New") }}</button>
+      <button type="button" @click="toAbout">{{ t("tario.seller.about", "About {name}", { name: vendor ? vendor.name : "" }) }}</button>
     </nav>
 
     <section v-if="aisleTiles.length" class="t-sec">
       <header class="t-sec__head">
-        <h2 class="t-sec__title">{{ vendor ? vendor.name + "’s" : "The" }} aisles</h2>
+        <h2 class="t-sec__title">{{ vendor ? t("tario.seller.aisles", "{name}’s aisles", { name: vendor.name }) : t("tario.seller.theAisles", "The aisles") }}</h2>
       </header>
       <div class="t-saisles">
         <router-link v-for="a in aisleTiles" :key="a.aisle.id" :to="a.to" class="t-saisle">
           <img v-if="a.image" :src="a.image" alt="" loading="lazy" />
           {{ a.aisle.title || a.aisle.name }}
-          <span>{{ a.count }} {{ a.count === 1 ? "product" : "products" }}</span>
+          <span>{{ t("tario.seller.productCount", { one: "{n} product", other: "{n} products" }, { n: a.count }) }}</span>
         </router-link>
       </div>
     </section>
@@ -68,30 +68,33 @@
       :key="'deals-' + vendorId"
       :filter="{ only_has_discount: true }"
       :limit="12"
-      :title="`Deals from ${vendor ? vendor.name : 'this seller'}`"
+      :title="vendor ? t('tario.seller.dealsFrom', 'Deals from {name}', { name: vendor.name }) : t('tario.seller.dealsFromThis', 'Deals from this seller')"
       :vendor="vendorId"
       sort="bestselling"
     />
 
     <section id="t-seller-about" class="t-sabout">
-      <h2 class="t-sec__title">About {{ vendor ? vendor.name : "this seller" }}</h2>
+      <h2 class="t-sec__title">{{ vendor ? t("tario.seller.about", "About {name}", { name: vendor.name }) : t("tario.seller.aboutThis", "About this seller") }}</h2>
       <p v-if="vendor && vendor.description">{{ vendor.description }}</p>
       <p v-else>
-        {{ vendor ? vendor.name : "This seller" }} is one of {{ seller_count > 1 ? seller_count : "the" }} independent sellers on
-        {{ $shop.title }}<template v-if="sells_line">, with {{ sells_line }}</template>. Everything they sell joins the
-        same cart as the other sellers' products, with one checkout.
+        {{
+          sells_line
+            ? t("tario.seller.blurbWith", "{name} is one of the independent sellers on {shop}, with {aisles}. Everything they sell joins the same cart as the other sellers' products, with one checkout.", { name: vendor ? vendor.name : t("tario.seller.thisSeller", "This seller"), shop: $shop.title, aisles: sells_line })
+            : t("tario.seller.blurb", "{name} is one of the independent sellers on {shop}. Everything they sell joins the same cart as the other sellers' products, with one checkout.", { name: vendor ? vendor.name : t("tario.seller.thisSeller", "This seller"), shop: $shop.title })
+        }}
       </p>
     </section>
 
     <h2 class="t-sall">
-      All of {{ vendor ? vendor.name + "’s" : "the" }} products
-      <span v-if="total !== null">{{ total.toLocaleString() }}</span>
+      {{ vendor ? t("tario.seller.allOf", "All of {name}’s products", { name: vendor.name }) : t("tario.seller.allOfThe", "All of the products") }}
+      <span v-if="total !== null">{{ formatNumber(total) }}</span>
     </h2>
   </div>
 </template>
 
 <script>
 import TarioRow from "../TarioRow.vue";
+import { t } from "../../kalio/i18n/kalio-i18n";
 import { photo } from "../tario-home";
 import { aisleImage, aisleRoute, aisles, countProducts, featured, offers, vendorImage, vendors } from "../../kalio/kalio-catalog";
 
@@ -137,7 +140,7 @@ export default {
       const names = this.aisleTiles.slice(0, 3).map((a) => String(a.aisle.title || a.aisle.name).toLowerCase().replace(/&amp;/g, "&"));
       if (!names.length) return "";
       if (names.length === 1) return names[0];
-      return names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
+      return t("tario.seller.list", "{first} and {last}", { first: names.slice(0, -1).join(", "), last: names[names.length - 1] });
     },
     cover() {
       const first = this.aisleTiles[0]?.aisle;

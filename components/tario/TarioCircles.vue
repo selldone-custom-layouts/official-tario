@@ -10,12 +10,12 @@
 <template>
   <section v-if="list.length" aria-labelledby="t-aisles" class="t-sec k-wrap">
     <header class="t-sec__head">
-      <h2 id="t-aisles" class="t-sec__title">Shop by category</h2>
+      <h2 id="t-aisles" class="t-sec__title">{{ t("tario.home.byCategory", "Shop by category") }}</h2>
       <router-link :to="catalogueRoute" class="t-sec__more">
-        Every product<v-icon class="k-flip" size="20">chevron_right</v-icon>
+        {{ t("header.everyProduct", "Every product") }}<v-icon class="k-flip" size="20">chevron_right</v-icon>
       </router-link>
     </header>
-    <nav aria-label="Categories" class="t-circles">
+    <nav :aria-label="t('tario.header.categories', 'Categories')" class="t-circles">
       <router-link v-for="aisle in list" :key="aisle.id" :to="aisleRoute(aisle)" class="t-circle">
         <span :style="{ background: tint(aisle) }" class="t-circle__o">
           <img v-if="aisle.icon" :src="aisleImage(aisle, 256)" alt="" height="128" loading="lazy" width="128" />

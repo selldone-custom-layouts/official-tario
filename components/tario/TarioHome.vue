@@ -31,7 +31,7 @@
       :key="has_deals === false ? 'popular' : 'deals'"
       :filter="has_deals === false ? null : { only_has_discount: true }"
       :more-to="has_deals === false ? bestRoute : dealsRoute"
-      :title="has_deals === false ? 'Popular this week' : 'Top deals'"
+      :title="has_deals === false ? t('tario.home.popular', 'Popular this week') : t('tario.home.topDeals', 'Top deals')"
       sort="bestselling"
       spread
       @loaded="onDeals"
@@ -41,7 +41,7 @@
 
     <tario-ways />
 
-    <tario-row :more-to="newRoute" lazy sort="newest" title="New arrivals" />
+    <tario-row :more-to="newRoute" :title="t('tario.header.new', 'New arrivals')" lazy sort="newest" />
 
     <tario-finds :aisles="ordered" />
 
@@ -50,7 +50,7 @@
       :key="aisle.id"
       :dir="aisle.name"
       :more-to="aisleRoute(aisle)"
-      :title="`Trending in ${aisle.title || aisle.name}`"
+      :title="t('tario.home.trending', 'Trending in {aisle}', { aisle: aisle.title || aisle.name })"
       lazy
       sort="bestselling"
     />
@@ -62,14 +62,14 @@
       :key="aisle.id"
       :dir="aisle.name"
       :more-to="aisleRoute(aisle)"
-      :title="`Trending in ${aisle.title || aisle.name}`"
+      :title="t('tario.home.trending', 'Trending in {aisle}', { aisle: aisle.title || aisle.name })"
       lazy
       sort="bestselling"
     />
 
     <div v-if="ordered.length" class="t-home__end k-wrap">
       <router-link :to="catalogueRoute" class="t-btn -outline">
-        Browse every product<v-icon class="k-flip" size="20">chevron_right</v-icon>
+        {{ t("tario.home.browseEvery", "Browse every product") }}<v-icon class="k-flip" size="20">chevron_right</v-icon>
       </router-link>
     </div>
   </div>

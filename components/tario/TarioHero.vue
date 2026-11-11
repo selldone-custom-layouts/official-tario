@@ -22,7 +22,7 @@
 <template>
   <section
     :aria-busy="!slides.length"
-    aria-label="This week"
+    :aria-label="t('tario.hero.label', 'This week')"
     aria-roledescription="carousel"
     class="t-hero k-wrap"
     @focusin="hold = true"
@@ -43,7 +43,7 @@
           v-for="(slide, i) in slides"
           :key="slide.key"
           :aria-hidden="i !== at"
-          :aria-label="`${i + 1} of ${slides.length}`"
+          :aria-label="t('tario.hero.slideOf', '{n} of {count}', { n: i + 1, count: slides.length })"
           :class="'-' + slide.tone"
           :inert="i !== at"
           aria-roledescription="slide"
@@ -67,17 +67,17 @@
               <router-link :to="slide.to" class="t-btn -main">
                 {{ slide.cta }}<v-icon class="k-flip" size="20">chevron_right</v-icon>
               </router-link>
-              <button v-if="i === 0" class="t-btn -line" type="button" @click="toAisles">Browse aisles</button>
+              <button v-if="i === 0" class="t-btn -line" type="button" @click="toAisles">{{ t("tario.hero.browseAisles", "Browse aisles") }}</button>
             </div>
           </div>
         </div>
       </div>
 
       <template v-if="slides.length > 1">
-        <button aria-label="Previous slide" class="t-arrow -hero -back" type="button" @click="go(at - 1)">
+        <button :aria-label="t('tario.hero.prev', 'Previous slide')" class="t-arrow -hero -back" type="button" @click="go(at - 1)">
           <v-icon class="k-flip" size="24">chevron_left</v-icon>
         </button>
-        <button aria-label="Next slide" class="t-arrow -hero -next" type="button" @click="go(at + 1)">
+        <button :aria-label="t('tario.hero.next', 'Next slide')" class="t-arrow -hero -next" type="button" @click="go(at + 1)">
           <v-icon class="k-flip" size="24">chevron_right</v-icon>
         </button>
         <div class="t-hero__dots">
@@ -85,7 +85,7 @@
             v-for="(slide, i) in slides"
             :key="slide.key"
             :aria-current="i === at"
-            :aria-label="`Slide ${i + 1}: ${slide.title}`"
+            :aria-label="t('tario.hero.slideDot', 'Slide {n}: {title}', { n: i + 1, title: slide.title })"
             :class="{ '-on': i === at }"
             type="button"
             @click="go(i)"
@@ -100,6 +100,7 @@
 import TarioPhoto from "./TarioPhoto.vue";
 import { aisleIndex, aisleRoute, aisles, catalogueRoute, dealsRoute, featured, percentOff, tintFor } from "../kalio/kalio-catalog";
 import { DEALS_FILTER, findAisle, headline, listProducts, photo } from "./tario-home";
+import { t } from "../kalio/i18n/kalio-i18n";
 
 const TURN_MS = 7000;
 const FRESH = /produce|fruit|veg/i;
@@ -178,15 +179,25 @@ export default {
         slides.push({
           key: "deals",
           tone: "red",
-          eyebrow: `This week at ${shop}`,
-          title: best ? `Fresh picks, up to ${best}% off` : "Fresh picks on offer",
-          lede: names.length
-            ? `Real savings from ${shop}’s sellers on ${names.join(", ")} and more.`
-            : `Real savings from ${shop}’s sellers.`,
-          cta: "Shop deals",
+          get eyebrow() {
+            return t("tario.hero.thisWeek", "This week at {shop}", { shop });
+          },
+          get title() {
+            return best ? t("tario.hero.dealsTitle", "Fresh picks, up to {off}% off", { off: best }) : t("tario.hero.dealsTitleNone", "Fresh picks on offer");
+          },
+          get lede() {
+            return names.length
+              ? t("tario.hero.dealsLede", "Real savings from {shop}’s sellers on {aisles} and more.", { shop, aisles: names.join(", ") })
+              : t("tario.hero.dealsLedeNone", "Real savings from {shop}’s sellers.", { shop });
+          },
+          get cta() {
+            return t("tario.shopDeals", "Shop deals");
+          },
           to: dealsRoute(),
           photo: photo("tario-hero-1-weekly"),
-          alt: "A kitchen counter with a bag of fresh groceries",
+          get alt() {
+            return t("tario.hero.altWeekly", "A kitchen counter with a bag of fresh groceries");
+          },
           products: spread(deals),
           ground: "#f6efe6",
         });
@@ -196,13 +207,23 @@ export default {
           slides.push({
             key: "popular",
             tone: "red",
-            eyebrow: `This week at ${shop}`,
-            title: "Fresh picks from every aisle",
-            lede: `${shop}’s best sellers, ready for your cart.`,
-            cta: "Shop best sellers",
+            get eyebrow() {
+              return t("tario.hero.thisWeek", "This week at {shop}", { shop });
+            },
+            get title() {
+              return t("tario.hero.popularTitle", "Fresh picks from every aisle");
+            },
+            get lede() {
+              return t("tario.hero.popularLede", "{shop}’s best sellers, ready for your cart.", { shop });
+            },
+            get cta() {
+              return t("tario.hero.popularCta", "Shop best sellers");
+            },
             to: catalogueRoute({ sort: "bestselling" }),
             photo: photo("tario-hero-1-weekly"),
-            alt: "A kitchen counter with a bag of fresh groceries",
+            get alt() {
+              return t("tario.hero.altWeekly", "A kitchen counter with a bag of fresh groceries");
+            },
             products: spread(popular),
             ground: "#f6efe6",
           });
@@ -212,13 +233,23 @@ export default {
         slides.push({
           key: "new",
           tone: "soft",
-          eyebrow: "Just in",
-          title: "New on the shelves",
-          lede: `The latest from ${shop}’s sellers, ready to add to your cart.`,
-          cta: "See what’s new",
+          get eyebrow() {
+            return t("tario.hero.justIn", "Just in");
+          },
+          get title() {
+            return t("tario.hero.newTitle", "New on the shelves");
+          },
+          get lede() {
+            return t("tario.hero.newLede", "The latest from {shop}’s sellers, ready to add to your cart.", { shop });
+          },
+          get cta() {
+            return t("tario.hero.newCta", "See what’s new");
+          },
           to: catalogueRoute({ sort: "newest" }),
           photo: photo("tario-hero-2-new"),
-          alt: "Groceries being unpacked on a kitchen island",
+          get alt() {
+            return t("tario.hero.altNew", "Groceries being unpacked on a kitchen island");
+          },
           products: fresh,
           ground: "#eef1f4",
         });
@@ -232,12 +263,20 @@ export default {
             key: "aisle-" + aisle.id,
             tone: "deep",
             eyebrow: title,
-            title: headline(aisle),
-            lede: aisle.description || `Everything in ${title.toLowerCase()}, from ${shop}’s sellers.`,
-            cta: `Shop ${title.toLowerCase()}`,
+            get title() {
+              return headline(aisle);
+            },
+            get lede() {
+              return aisle.description || t("tario.hero.aisleLede", "Everything in {aisle}, from {shop}’s sellers.", { aisle: title.toLowerCase(), shop });
+            },
+            get cta() {
+              return t("tario.shopAisle", "Shop {aisle}", { aisle: title.toLowerCase() });
+            },
             to: aisleRoute(aisle),
             photo: FRESH.test(`${aisle.title} ${aisle.name}`) ? photo("tario-hero-3-fresh") : null,
-            alt: `${title} on display`,
+            get alt() {
+              return t("tario.hero.altAisle", "{aisle} on display", { aisle: title });
+            },
             products: pics,
             ground: tintFor(index.get(aisle.id) || aisle),
           });

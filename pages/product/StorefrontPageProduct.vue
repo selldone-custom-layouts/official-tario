@@ -31,7 +31,7 @@
         <slot name="header" :center="true"></slot>
 
         <!-- ⬬⬬⬬⬬ Breadcrumb, admin shortcut, QR ⬬⬬⬬⬬ -->
-        <nav aria-label="Breadcrumb" class="k-crumbs">
+        <nav :aria-label="t('pdp.breadcrumb', 'Breadcrumb')" class="k-crumbs">
           <router-link :to="{ name: window.$storefront.routes.SHOP_PAGE }">{{ $shop.title }}</router-link>
           <template v-if="product && product.category">
             <v-icon aria-hidden="true" class="k-flip" size="16">chevron_right</v-icon>
@@ -71,9 +71,9 @@
 
       <!-- ▁▁▁▁▁▁ 🞇 Tario (product page B): one stack of folding sections 🞇 ▁▁▁▁▁▁ -->
       <div :style="{ order: getOrder('spec') }">
-        <section aria-label="About this item" class="t-folds k-wrap">
+        <section :aria-label="t('tario.pdp.aboutItem', 'About this item')" class="t-folds k-wrap">
           <details v-if="highlight_rows.length" class="t-fold -phone" open>
-            <summary>Highlights<v-icon aria-hidden="true">expand_more</v-icon></summary>
+            <summary>{{ t("pdp.highlights", "Highlights") }}<v-icon aria-hidden="true">expand_more</v-icon></summary>
             <ul class="t-hl__list">
               <li v-for="h in highlight_rows" :key="h.key">
                 <v-icon aria-hidden="true" size="20">check_circle</v-icon><span><b>{{ h.key }}:</b> {{ h.value }}</span>
@@ -81,15 +81,15 @@
             </ul>
           </details>
           <details v-if="has_spec" class="t-fold" open>
-            <summary>Specifications<v-icon aria-hidden="true">expand_more</v-icon></summary>
+            <summary>{{ t("tario.pdp.specs", "Specifications") }}<v-icon aria-hidden="true">expand_more</v-icon></summary>
             <s-product-spec class="k-pdp-spec t-fold__spec"></s-product-spec>
           </details>
           <details v-if="article" class="t-fold">
-            <summary>About this product<v-icon aria-hidden="true">expand_more</v-icon></summary>
+            <summary>{{ t("pdp.about", "About this product") }}<v-icon aria-hidden="true">expand_more</v-icon></summary>
             <s-product-article hide-title></s-product-article>
           </details>
           <details v-if="has_pros_cons && cons_list.length" class="t-fold">
-            <summary>Good to know<v-icon aria-hidden="true">expand_more</v-icon></summary>
+            <summary>{{ t("tario.pdp.goodToKnow", "Good to know") }}<v-icon aria-hidden="true">expand_more</v-icon></summary>
             <ul class="k-highlights__list -cons">
               <li v-for="item in cons_list" :key="'c' + item.key">
                 <v-icon aria-hidden="true" size="20">remove_circle_outline</v-icon>
@@ -98,14 +98,14 @@
             </ul>
           </details>
           <details class="t-fold">
-            <summary>Shipping &amp; delivery<v-icon aria-hidden="true">expand_more</v-icon></summary>
+            <summary>{{ t("tario.pdp.shipping", "Shipping & delivery") }}<v-icon aria-hidden="true">expand_more</v-icon></summary>
             <ul v-if="ways.length" class="t-fold__ways">
               <li v-for="w in ways" :key="w.key">
                 <v-icon aria-hidden="true">{{ w.icon }}</v-icon>
                 <span
-                  ><b>{{ w.word }}</b> — {{ w.line }}.
-                  <template v-if="w.free">Free.</template>
-                  <template v-else-if="w.freeOver && moneyIfKnown(w.freeOver, w.currency)">Free on orders over <span class="u--price">{{ moneyIfKnown(w.freeOver, w.currency, { short: "auto" }) }}</span>.</template>
+                  ><b>{{ w.word }}</b> — {{ t("tario.pdp.note.line", "{line}.", { line: w.line }) }}
+                  <template v-if="w.free">{{ t("tario.pdp.free", "Free.") }}</template>
+                  <template v-else-if="w.freeOver && moneyIfKnown(w.freeOver, w.currency)">{{ t("tario.pdp.freeOver", "Free on orders over {amount}.", { amount: moneyIfKnown(w.freeOver, w.currency, { short: "auto" }) }) }}</template>
                 </span>
               </li>
             </ul>
@@ -114,7 +114,7 @@
             <s-product-guide class="k-pdp-block"></s-product-guide>
           </details>
           <details id="k-reviews" class="t-fold" open>
-            <summary>Ratings &amp; reviews<v-icon aria-hidden="true">expand_more</v-icon></summary>
+            <summary>{{ t("tario.pdp.reviews", "Ratings & reviews") }}<v-icon aria-hidden="true">expand_more</v-icon></summary>
             <kalio-reviews></kalio-reviews>
           </details>
         </section>
@@ -146,7 +146,7 @@
             name: window.$storefront.routes.SHOP_CATEGORY_PAGE,
             params: { category_name: product.category.name },
           }"
-          :title="'More in ' + (product.category.title || product.category.name)"
+          :title="t('pdp.moreFrom', 'More in {aisle}', { aisle: product.category.title || product.category.name })"
           lazy
           sort="bestselling"
         />

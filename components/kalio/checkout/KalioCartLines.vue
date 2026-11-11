@@ -21,10 +21,10 @@
         <span class="k-lines__who">
           <router-link v-if="group.route" :to="group.route" class="k-lines__name">{{ group.name }}</router-link>
           <b v-else class="k-lines__name">{{ group.name }}</b>
-          <small>· {{ group.units }} {{ group.units === 1 ? "item" : "items" }}</small>
+          <small>· {{ t("checkout.lines.items", { one: "{n} item", other: "{n} items" }, { n: group.units }) }}</small>
         </span>
         <!-- Tario 1.2.0 (cart A): the seller's shop, not a subtotal. -->
-        <router-link v-if="group.route" :to="group.route" class="k-lines__visit">Visit shop</router-link>
+        <router-link v-if="group.route" :to="group.route" class="k-lines__visit">{{ t("tario.visitShop", "Visit shop") }}</router-link>
       </header>
 
       <div v-for="item in group.items" :key="item.id" class="k-lines__line">
@@ -34,12 +34,12 @@
         <div class="k-lines__text">
           <router-link :to="productRoute(item.product_id)" class="k-lines__title">{{ item.product?.title }}</router-link>
           <small class="k-lines__each">
-            <template v-if="size(item)">Size: {{ size(item) }} · </template
-            ><template v-if="item.product?.unit && !/^(each|ea|piece|pc)$/i.test(item.product.unit)">per {{ item.product.unit }} · </template
-            ><u-price :amount="item.price" :currency="item.currency" /> each
+            <template v-if="size(item)">{{ t("tario.cart.size", "Size: {size}", { size: size(item) }) }} · </template
+            ><template v-if="item.product?.unit && !/^(each|ea|piece|pc)$/i.test(item.product.unit)">{{ t("rail.perUnit", "per {unit}", { unit: item.product.unit }) }} · </template
+            ><template v-for="(part, i) in t('compare.perEach', '{price} each').split('{price}')" :key="i"><u-price v-if="i" :amount="item.price" :currency="item.currency" />{{ part }}</template>
           </small>
           <button class="k-lines__remove" type="button" @click="step(item, -shown(item))">
-            <v-icon size="16">delete_outline</v-icon>Remove
+            <v-icon size="16">delete_outline</v-icon>{{ t("tario.cart.remove", "Remove") }}
           </button>
           <small v-if="item.offer && item.offer_count" class="k-lines__offer">
             <v-icon size="14">redeem</v-icon>
@@ -50,20 +50,20 @@
             }}
           </small>
           <small v-if="shown(item) > available(item)" class="k-lines__short">
-            <v-icon size="14">error_outline</v-icon>Only {{ available(item) }} left
+            <v-icon size="14">error_outline</v-icon>{{ t("checkout.lines.onlyLeft", { one: "Only {n} left", other: "Only {n} left" }, { n: available(item) }) }}
           </small>
         </div>
         <div
-          :aria-label="`Quantity of ${item.product?.title || 'this item'}`"
+          :aria-label="item.product?.title ? t('checkout.lines.quantityOf', 'Quantity of {name}', { name: item.product.title }) : t('checkout.lines.quantityOfThis', 'Quantity of this item')"
           :class="{ '-busy': settling(lineProduct(item), item) }"
           class="k-lines__qty"
           role="group"
         >
-          <button :aria-label="shown(item) > 1 ? 'One fewer' : 'Remove from basket'" type="button" @click="step(item, -1)">
+          <button :aria-label="shown(item) > 1 ? t('checkout.lines.oneFewer', 'One fewer') : t('checkout.lines.removeFromBasket', 'Remove from cart')" type="button" @click="step(item, -1)">
             <v-icon size="18">{{ shown(item) > 1 ? "remove" : "delete_outline" }}</v-icon>
           </button>
           <output aria-live="polite">{{ shown(item) }}</output>
-          <button :disabled="shown(item) >= available(item)" aria-label="One more" type="button" @click="step(item, 1)">
+          <button :disabled="shown(item) >= available(item)" :aria-label="t('checkout.lines.oneMore', 'One more')" type="button" @click="step(item, 1)">
             <v-icon size="18">add</v-icon>
           </button>
         </div>

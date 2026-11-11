@@ -18,11 +18,11 @@
     <header class="k-offers__head">
       <!-- Tario 1.2.0 (product page B): a table of the sellers. -->
       <h2 :id="headingId" class="k-offers__title">
-        {{ items_show.length > 1 ? "Compare sellers" : "Sold by" }}
+        {{ items_show.length > 1 ? t("tario.offers.compare", "Compare sellers") : t("offers.soldBy", "Sold by") }}
       </h2>
     </header>
     <div v-if="items_show.length > 1" aria-hidden="true" class="k-offers__cols">
-      <span>Seller</span><span>Price</span><span>Choose</span>
+      <span>{{ t("seller.label", "Seller") }}</span><span>{{ t("compare.listing.price", "Price") }}</span><span>{{ t("tario.offers.choose", "Choose") }}</span>
     </div>
 
     <div :aria-labelledby="headingId" class="k-offers__list" role="radiogroup">
@@ -50,7 +50,7 @@
             class="k-offer__link"
             @click.stop
           >
-            Visit shop
+            {{ t("offers.visitShop", "Visit shop") }}
           </a>
           <span
             v-if="pickup_transportation_for_vendors_exists && offer.vendor.warehouse"

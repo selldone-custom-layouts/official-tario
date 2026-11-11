@@ -18,12 +18,12 @@
   <div :style="{ '--k-tint': tint }" class="k-pdp t-pdp">
     <div class="t-pdp__grid">
       <!-- ▆▆▆▆ Pictures and highlights ▆▆▆▆ -->
-      <section v-if="showCover" aria-label="Product images" class="t-pdp__media k-pdp__media">
+      <section v-if="showCover" :aria-label="t('tario.pdp.images', 'Product images')" class="t-pdp__media k-pdp__media">
         <div class="k-pdp__stage t-pdp__stage">
           <s-shop-product-slide-show :current-variant="current_variant" :vertical="false" />
         </div>
         <div v-if="highlights.length" class="t-hl">
-          <h4>Highlights</h4>
+          <h4>{{ t("pdp.highlights", "Highlights") }}</h4>
           <ul>
             <li v-for="h in highlights" :key="h.key">
               <v-icon aria-hidden="true" size="20">check_circle</v-icon>
@@ -43,10 +43,10 @@
           <template v-if="$product.rate_count && $product.rate">
             <b>{{ numeralFormat($product.rate, "0.0") }}</b>
             <a class="t-pdp__ratelink" href="#k-reviews" @click.prevent="toReviews">
-              {{ numeralFormat($product.rate_count, "0,0") }} {{ $product.rate_count === 1 ? "rating" : "ratings" }}
+              {{ t("reviews.ratingCount", { one: "{n} rating", other: "{n} ratings" }, { n: $product.rate_count }) }}
             </a>
           </template>
-          <span v-else class="t-pdp__norate">No ratings yet</span>
+          <span v-else class="t-pdp__norate">{{ t("tario.pdp.noRatings", "No ratings yet") }}</span>
         </div>
         <p v-if="!has_original_warranty" class="k-pdp__warn">
           <v-icon size="16">error_outline</v-icon>
@@ -56,7 +56,7 @@
         <div class="t-buybox">
           <!-- How do you want it? -->
           <template v-if="ways.length">
-            <div :class="'-n' + ways.length" aria-label="How do you want it?" class="t-seg" role="radiogroup">
+            <div :class="'-n' + ways.length" :aria-label="t('tario.cart.how', 'How do you want it?')" class="t-seg" role="radiogroup">
               <button
                 v-for="w in ways"
                 :key="w.key"
@@ -74,9 +74,9 @@
               <v-icon size="18">info_outline</v-icon>
               <span>
                 {{ wayNote(way) }}
-                <template v-if="way.free"> Free.</template>
+                <template v-if="way.free"> {{ t("tario.pdp.free", "Free.") }}</template>
                 <template v-else-if="way.freeOver && moneyIfKnown(way.freeOver, way.currency)">
-                  Free on orders over <span class="u--price">{{ moneyIfKnown(way.freeOver, way.currency, { short: "auto" }) }}</span>.</template
+                  {{ t("tario.pdp.freeOver", "Free on orders over {amount}.", { amount: moneyIfKnown(way.freeOver, way.currency, { short: "auto" }) }) }}</template
                 >
               </span>
             </p>
@@ -175,7 +175,7 @@
 
         <p v-if="seller_name" class="t-pdp__sold">
           <v-icon size="18">verified</v-icon>
-          Sold by {{ seller_name }}, an independent seller on {{ shop?.title }}
+          {{ t("tario.pdp.soldBy", "Sold by {seller}, an independent seller on {shop}", { seller: seller_name, shop: shop?.title || "" }) }}
         </p>
 
         <div class="k-pdp__actions t-pdp__actions">
@@ -205,31 +205,31 @@
 
     <!-- ▆▆▆▆ Goes well with ▆▆▆▆ -->
     <section v-if="pairs.length" aria-labelledby="t-fbt" class="t-fbt">
-      <h2 id="t-fbt" class="t-fbt__h">Goes well with</h2>
+      <h2 id="t-fbt" class="t-fbt__h">{{ t("tario.fbt.title", "Goes well with") }}</h2>
       <div class="t-fbt__box">
         <template v-for="(item, i) in fbt_items" :key="item.id">
           <span v-if="i" aria-hidden="true" class="t-fbt__plus">+</span>
           <div class="t-fbt__it">
             <label class="t-fbt__im">
-              <input v-model="ticked" :value="item.id" type="checkbox" :aria-label="'Include ' + item.title" />
+              <input v-model="ticked" :value="item.id" type="checkbox" :aria-label="t('tario.fbt.include', 'Include {name}', { name: item.title })" />
               <span class="t-fbt__cbx"><v-icon size="16">check</v-icon></span>
               <img v-if="item.image" :src="item.image" :srcset="item.srcset" alt="" loading="lazy" sizes="(max-width: 760px) 72px, 150px" @error="dropSrcset" />
             </label>
             <div>
               <u-price :amount="item.price" :class="{ '-sale': item.sale }" :currency="currency" class="t-fbt__price" />
               <router-link v-if="i" :to="productTo(item)" class="t-fbt__name">{{ item.title }}</router-link>
-              <span v-else class="t-fbt__name"><b>This item:</b> {{ item.title }}</span>
+              <span v-else class="t-fbt__name"><b>{{ t("tario.fbt.thisItem", "This item:") }}</b> {{ item.title }}</span>
             </div>
           </div>
         </template>
         <div class="t-fbt__tot">
-          <span class="t-fbt__lbl">Total for {{ ticked.length }} {{ ticked.length === 1 ? "item" : "items" }}</span>
+          <span class="t-fbt__lbl">{{ t("tario.fbt.totalFor", { one: "Total for {n} item", other: "Total for {n} items" }, { n: ticked.length }) }}</span>
           <u-price :amount="fbt_total" :currency="currency" class="t-fbt__sum" />
           <button :disabled="!ticked.length || adding_all" class="t-btn -red -wide" type="button" @click="addAll">
             <v-progress-circular v-if="adding_all" indeterminate size="18" width="2" />
-            <template v-else>{{ ticked.length > 1 ? `Add all ${ticked.length} to cart` : "Add to cart" }}</template>
+            <template v-else>{{ ticked.length > 1 ? t("tario.fbt.addAll", "Add all {n} to cart", { n: ticked.length }) : t("card.addToBasket", "Add to cart") }}</template>
           </button>
-          <span class="t-fbt__small">Each joins your cart as its own line, with its own seller.</span>
+          <span class="t-fbt__small">{{ t("tario.fbt.note", "Each joins your cart as its own line, with its own seller.") }}</span>
         </div>
       </div>
     </section>
@@ -250,6 +250,7 @@
 import KalioProductOverview from "../../kalio/product/KalioProductOverview.vue";
 import KalioQuickBuy from "../../kalio/KalioQuickBuy.vue";
 import { moneyIfKnown, waysOf } from "../tario-home";
+import { t } from "../../kalio/i18n/kalio-i18n";
 import { currentCurrency, money } from "../../region-switcher/region";
 import { aisles, dropSrcset, priceOf, productImage, productSrcset } from "../../kalio/kalio-catalog";
 import { basketLine, hasSizes, quickAdd } from "../../kalio/kalio-basket";
@@ -270,12 +271,13 @@ const PAIRS = [
 ];
 const FALLBACK = [/produce|fruit/i, /dairy|egg/i, /bread|bakery/i];
 
+/* The note under a way, by the way's id (tario-home's WAYS): drawn at render. */
 const NOTES = {
-  Pickup: "Collect it at the shop.",
-  Delivery: "A courier brings it to your door. The cost shows once you add your address.",
-  Shipping: "Shipped to your address. The cost shows at checkout.",
-  "By post": "Sent to your address by post. The cost shows at checkout.",
-  Worldwide: "Shipped wherever you are. The cost shows at checkout.",
+  pickup: () => t("tario.pdp.note.pickup", "Collect it at the shop."),
+  delivery: () => t("tario.pdp.note.delivery", "A courier brings it to your door. The cost shows once you add your address."),
+  shipping: () => t("tario.pdp.note.shipping", "Shipped to your address. The cost shows at checkout."),
+  post: () => t("tario.pdp.note.post", "Sent to your address by post. The cost shows at checkout."),
+  worldwide: () => t("tario.pdp.note.worldwide", "Shipped wherever you are. The cost shows at checkout."),
 };
 
 export default {
@@ -351,7 +353,7 @@ export default {
     ways: {
       handler(list) {
         if (!list.some((w) => w.key === this.way_key)) {
-          this.way_key = (list.find((w) => w.key === "Delivery") || list[0] || {}).key || null;
+          this.way_key = (list.find((w) => w.key === "delivery") || list[0] || {}).key || null;
         }
       },
       immediate: true,
@@ -369,7 +371,7 @@ export default {
     money,
     dropSrcset,
     wayNote(way) {
-      return NOTES[way.key] || way.line + ".";
+      return NOTES[way.key] ? NOTES[way.key]() : t("tario.pdp.note.line", "{line}.", { line: way.line });
     },
     productTo(item) {
       return { name: window.$storefront.routes.PRODUCT_PAGE, params: { product_id: item.id } };

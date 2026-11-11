@@ -31,16 +31,16 @@
         </div>
 
         <nav aria-labelledby="k-footer-shop" class="k-footer__col">
-          <h3 id="k-footer-shop" class="k-footer__head">Categories</h3>
-          <router-link :to="dealsRoute">Deals</router-link>
+          <h3 id="k-footer-shop" class="k-footer__head">{{ t("tario.header.categories", "Categories") }}</h3>
+          <router-link :to="dealsRoute">{{ t("header.deals", "Deals") }}</router-link>
           <router-link v-for="aisle in aisleList.slice(0, 8)" :key="aisle.id" :to="aisleRoute(aisle)">
             {{ aisle.title || aisle.name }}
           </router-link>
-          <router-link v-if="aisleList.length > 8" :to="catalogueRoute" class="-more">All categories</router-link>
+          <router-link v-if="aisleList.length > 8" :to="catalogueRoute" class="-more">{{ t("tario.footer.allCategories", "All categories") }}</router-link>
         </nav>
 
         <nav v-if="sellerList.length" aria-labelledby="k-footer-sellers" class="k-footer__col">
-          <h3 id="k-footer-sellers" class="k-footer__head">Sellers</h3>
+          <h3 id="k-footer-sellers" class="k-footer__head">{{ t("footer.sellers", "Sellers") }}</h3>
           <router-link v-for="seller in sellerList" :key="seller.id" :to="sellerRoute(seller)" class="k-footer__seller">
             <img v-if="seller.icon" :src="vendorImage(seller, true)" alt="" height="28" width="28" loading="lazy" />
             {{ seller.name }}
@@ -53,14 +53,14 @@
         </nav>
 
         <nav aria-labelledby="k-footer-account" class="k-footer__col">
-          <h3 id="k-footer-account" class="k-footer__head">Your account</h3>
+          <h3 id="k-footer-account" class="k-footer__head">{{ t("header.yourAccount", "Your account") }}</h3>
           <template v-if="user">
-            <router-link :to="{ name: 'KalioAccountHome' }">My account</router-link>
-            <router-link :to="{ name: window.$storefront.routes.HISTORY_ORDERS_PHYSICAL }">Orders</router-link>
-            <router-link :to="{ name: window.$storefront.routes.USER_FAVORITES_PAGE }">Saved</router-link>
+            <router-link :to="{ name: 'KalioAccountHome' }">{{ t("header.myAccount", "My account") }}</router-link>
+            <router-link :to="{ name: window.$storefront.routes.HISTORY_ORDERS_PHYSICAL }">{{ t("header.orders", "Orders") }}</router-link>
+            <router-link :to="{ name: window.$storefront.routes.USER_FAVORITES_PAGE }">{{ t("header.saved", "Saved") }}</router-link>
           </template>
-          <button v-else class="k-footer__textbtn" type="button" @click="signIn">Sign in</button>
-          <router-link :to="{ name: window.$storefront.routes.BASKET_PAGE, params: { type: 'PHYSICAL' } }">Cart</router-link>
+          <button v-else class="k-footer__textbtn" type="button" @click="signIn">{{ t("common.signIn", "Sign in") }}</button>
+          <router-link :to="{ name: window.$storefront.routes.BASKET_PAGE, params: { type: 'PHYSICAL' } }">{{ t("header.basket", "Cart") }}</router-link>
         </nav>
       </div>
 
@@ -75,8 +75,8 @@
       <div class="k-wrap k-footer__base">
         <span>© {{ year }} {{ shopTitle }}</span>
         <span class="k-footer__base-links">
-          <router-link :to="{ name: window.$storefront.routes.SHOP_PROFILE_PAGE_PRIVACY }">Privacy</router-link>
-          <router-link :to="{ name: window.$storefront.routes.SHOP_PROFILE_PAGE_TERMS }">Terms</router-link>
+          <router-link :to="{ name: window.$storefront.routes.SHOP_PROFILE_PAGE_PRIVACY }">{{ t("footer.privacy", "Privacy") }}</router-link>
+          <router-link :to="{ name: window.$storefront.routes.SHOP_PROFILE_PAGE_TERMS }">{{ t("footer.terms", "Terms") }}</router-link>
           <s-footer-section-gdpr></s-footer-section-gdpr>
           <s-footer-section-selldone></s-footer-section-selldone>
         </span>
@@ -94,6 +94,7 @@ import { EventBus } from "@selldone/components-vue/utils/events/EventBus.ts";
 import ThemeSwitcherRow from "../../theme-switcher/ThemeSwitcherRow.vue";
 import { themeState } from "../../theme-switcher/theme-switcher";
 import { aisleRoute, aisles, catalogueRoute, dealsRoute, sellerRoute, vendorImage, vendors } from "../kalio-catalog";
+import { t } from "../i18n/kalio-i18n";
 
 export default {
   name: "KalioFooter",
@@ -139,9 +140,17 @@ export default {
       if (description && !/^it['’]s my awesome .* website\.?$/i.test(description)) return description;
       if (!this.aisleList.length) return null;
       const sellers = this.sellerList.length;
+      const n = this.aisleList.length;
       return sellers > 1
-        ? `${this.aisleList.length} aisles of groceries from ${sellers} independent sellers, in one cart.`
-        : `${this.aisleList.length} aisles of groceries, in one cart.`;
+        ? t(
+            "footer.lede.many",
+            {
+              one: "{n} aisle of groceries from {sellers} independent sellers, in one cart.",
+              other: "{n} aisles of groceries from {sellers} independent sellers, in one cart.",
+            },
+            { n, sellers },
+          )
+        : t("footer.lede.one", { one: "{n} aisle of groceries, in one cart.", other: "{n} aisles of groceries, in one cart." }, { n });
     },
     /* The merchant's footer menu (Selldone menus, type FOOTER), flattened,
        or the standard pages when the shop has none. */
@@ -162,10 +171,10 @@ export default {
       if (items.length) return items;
       const r = window.$storefront.routes;
       return [
-        { name: "About us", to: { name: r.SHOP_PROFILE_PAGE_ABOUT_US } },
-        { name: "Contact us", to: { name: r.SHOP_CONTACT_US } },
-        { name: "Terms of use", to: { name: r.SHOP_PROFILE_PAGE_TERMS } },
-        { name: "Privacy", to: { name: r.SHOP_PROFILE_PAGE_PRIVACY } },
+        { name: t("footer.links.about", "About us"), to: { name: r.SHOP_PROFILE_PAGE_ABOUT_US } },
+        { name: t("footer.links.contact", "Contact us"), to: { name: r.SHOP_CONTACT_US } },
+        { name: t("footer.links.terms", "Terms of use"), to: { name: r.SHOP_PROFILE_PAGE_TERMS } },
+        { name: t("footer.privacy", "Privacy"), to: { name: r.SHOP_PROFILE_PAGE_PRIVACY } },
       ];
     },
   },

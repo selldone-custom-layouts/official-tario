@@ -14,9 +14,9 @@
 <template>
   <section v-if="tiles.length >= 3 || busy" ref="root" aria-labelledby="t-tiles" class="t-sec k-wrap">
     <header class="t-sec__head">
-      <h2 id="t-tiles" class="t-sec__title">Deals for every aisle</h2>
+      <h2 id="t-tiles" class="t-sec__title">{{ t("tario.tiles.title", "Deals for every aisle") }}</h2>
       <router-link :to="dealsRoute" class="t-sec__more">
-        All deals<v-icon class="k-flip" size="20">chevron_right</v-icon>
+        {{ t("tario.tiles.allDeals", "All deals") }}<v-icon class="k-flip" size="20">chevron_right</v-icon>
       </router-link>
     </header>
     <div :class="'-n' + Math.max(3, tiles.length)" class="t-tiles">
@@ -33,8 +33,8 @@
         />
         <span class="t-tile__cap">
           <small>{{ tile.eyebrow }}</small>
-          <b>{{ tile.pre }}<u-price v-if="tile.from != null" :amount="tile.from" :currency="currency" />{{ tile.post }}</b>
-          <u>Shop now</u>
+          <b><template v-for="(part, i) in lineOf(tile)" :key="i"><u-price v-if="i" :amount="tile.from" :currency="currency" />{{ part }}</template></b>
+          <u>{{ t("tario.tiles.shopNow", "Shop now") }}</u>
         </span>
       </router-link>
     </div>
@@ -47,6 +47,7 @@ import CurrencyMixin from "@selldone/components-vue/mixin/currency/CurrencyMixin
 import TarioPhoto from "./TarioPhoto.vue";
 import { aisleRoute, dealsRoute, percentOff, priceOf, tintFor } from "../kalio/kalio-catalog";
 import { DEALS_FILTER, TILES, findAisle, listProducts, photo } from "./tario-home";
+import { t } from "../kalio/i18n/kalio-i18n";
 
 const MAX = 5;
 
@@ -112,6 +113,19 @@ export default {
   },
 
   methods: {
+    /** A tile's line, in the visitor's language, split around the price
+       ("Fresh-baked, from {from}"): drawn at render, so it follows a
+       language pick. */
+    lineOf(tile) {
+      const aisle = tile.eyebrow.toLowerCase();
+      let line;
+      if (tile.kind) line = tile.off > 0 ? tile.kind.deal : tile.kind.plain;
+      else line = tile.off > 0 ? t("tario.tiles.upToOffAisle", "Up to {off}% off {aisle}", { aisle }) : t("tario.shopAisle", "Shop {aisle}", { aisle });
+      if (line.includes("{from}") && tile.from == null) line = t("tario.shopAisle", "Shop {aisle}", { aisle });
+      line = line.split("{off}").join(String(tile.off));
+      return line.includes("{from}") && tile.from != null ? line.split("{from}") : [line];
+    },
+
     /** Which aisle each tile is: the promoted ones first, then the rest. */
     picks() {
       const used = new Set();
@@ -156,20 +170,13 @@ export default {
         const off = Math.max(0, ...deals.map((product) => percentOff(this.shop, product)));
         const prices = products.map((product) => priceOf(this.shop, product, this.currency).now).filter((n) => n > 0);
         const from = prices.length ? Math.min(...prices) : null;
-        let line;
-        if (kind) line = off > 0 ? kind.deal : kind.plain;
-        else line = off > 0 ? `Up to {off}% off ${title.toLowerCase()}` : `Shop ${title.toLowerCase()}`;
-        if (line.includes("{from}") && from == null) line = `Shop ${title.toLowerCase()}`;
-        line = line.replace("{off}", off);
-        const [pre, post] = line.includes("{from}") ? line.split("{from}") : [line, ""];
         tiles.push({
           key: aisle.id,
           to: aisleRoute(aisle),
           eyebrow: title,
-          title: line.replace("{from}", ""),
-          pre,
-          post,
-          from: line.includes("{from}") ? from : null,
+          kind,
+          off,
+          from,
           photo: kind ? photo(kind.photo) : null,
           alt: title,
           products,

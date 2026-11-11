@@ -30,26 +30,26 @@
     scrollable
   >
     <div class="t-signin__card">
-      <button aria-label="Close" class="t-signin__x" type="button" @click="show = false">
+      <button :aria-label="t('common.close', 'Close')" class="t-signin__x" type="button" @click="show = false">
         <v-icon>close</v-icon>
       </button>
       <p class="t-signin__mark"><i aria-hidden="true"></i>{{ shopTitle }}</p>
-      <h2 id="k-signin-title" class="t-signin__title">Sign in or create account</h2>
+      <h2 id="k-signin-title" class="t-signin__title">{{ t("signin.eyebrow", "Sign in or create account") }}</h2>
       <p class="t-signin__lede">
-        {{ sellerCount > 1 ? `One account for every seller on ${shopTitle}.` : `Your account is made as you sign in.` }}
+        {{ sellerCount > 1 ? t("tario.signin.oneAccount", "One account for every seller on {shop}.", { shop: shopTitle }) : t("tario.signin.madeAsYouSignIn", "Your account is made as you sign in.") }}
       </p>
       <s-shop-login v-model:show="show" class="k-signin__methods t-signin__methods" />
       <ul class="t-signin__perks">
-        <li><v-icon size="20">local_shipping</v-icon>Follow every order to your door</li>
-        <li><v-icon size="20">replay</v-icon>Buy your usual again in one tap</li>
-        <li><v-icon size="20">favorite_border</v-icon>Keep favourites for next week</li>
-        <li v-if="sellerCount > 1"><v-icon size="20">storefront</v-icon>One cart across {{ sellerCount }} independent sellers</li>
+        <li><v-icon size="20">local_shipping</v-icon>{{ t("signin.perks.orders", "Follow every order to your door") }}</li>
+        <li><v-icon size="20">replay</v-icon>{{ t("tario.signin.buyAgain", "Buy your usual again in one tap") }}</li>
+        <li><v-icon size="20">favorite_border</v-icon>{{ t("signin.perks.saved", "Keep favourites for next week") }}</li>
+        <li v-if="sellerCount > 1"><v-icon size="20">storefront</v-icon>{{ t("signin.perks.sellers", { one: "One cart across {n} independent seller", other: "One cart across {n} independent sellers" }, { n: sellerCount }) }}</li>
       </ul>
       <p class="t-signin__legal">
-        By continuing you agree to {{ shopTitle }}’s
-        <router-link :to="{ name: window.$storefront.routes.SHOP_PROFILE_PAGE_TERMS }" @click="show = false">Terms</router-link>
-        and
-        <router-link :to="{ name: window.$storefront.routes.SHOP_PROFILE_PAGE_PRIVACY }" @click="show = false">Privacy</router-link>.
+        {{ t("signin.legal.lead", "By continuing you agree to {shop}’s", { shop: shopTitle }) }}
+        <router-link :to="{ name: window.$storefront.routes.SHOP_PROFILE_PAGE_TERMS }" @click="show = false">{{ t("signin.legal.terms", "Terms") }}</router-link>
+        {{ t("signin.legal.and", "and") }}
+        <router-link :to="{ name: window.$storefront.routes.SHOP_PROFILE_PAGE_PRIVACY }" @click="show = false">{{ t("tario.signin.privacy", "Privacy") }}</router-link>.
       </p>
       <div v-if="busyUser" class="k-signin__busy">
         <v-progress-circular color="#fff" indeterminate size="36" width="3" />

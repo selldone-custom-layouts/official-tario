@@ -12,15 +12,15 @@
 <template>
   <section v-if="tiles.length >= 2" aria-labelledby="t-finds" class="t-sec k-wrap">
     <header class="t-sec__head">
-      <h2 id="t-finds" class="t-sec__title">Fresh finds</h2>
+      <h2 id="t-finds" class="t-sec__title">{{ t("tario.finds.title", "Fresh finds") }}</h2>
     </header>
     <div class="t-finds">
       <router-link v-for="tile in tiles" :key="tile.key" :to="tile.to" class="t-tile -tall">
         <tario-photo :alt="tile.alt" :ground="tile.ground" :products="tile.products" :src="tile.photo" shape="tall" />
         <span class="t-tile__cap">
           <small>{{ tile.eyebrow }}</small>
-          <b>{{ tile.title }}</b>
-          <u>Shop {{ tile.eyebrow.toLowerCase() }}</u>
+          <b>{{ tile.kind.title }}</b>
+          <u>{{ t("tario.shopAisle", "Shop {aisle}", { aisle: tile.eyebrow.toLowerCase() }) }}</u>
         </span>
       </router-link>
     </div>
@@ -75,7 +75,7 @@ export default {
           key: aisle.id,
           to: aisleRoute(aisle),
           eyebrow: aisle.title || aisle.name,
-          title: kind.title,
+          kind,
           photo: photo(kind.photo),
           alt: aisle.title || aisle.name,
           products: reads[i],

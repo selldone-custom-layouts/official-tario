@@ -168,7 +168,7 @@ $t-tablet: 1100px;
       content: "";
       position: absolute;
       top: 3px;
-      left: 3px;
+      inset-inline-start: 3px;
       width: 18px;
       height: 18px;
       border-radius: 50%;
@@ -182,7 +182,7 @@ $t-tablet: 1100px;
     background: var(--k-green);
 
     &::after {
-      left: 19px;
+      inset-inline-start: 19px;
     }
   }
 }
@@ -567,7 +567,7 @@ $t-tablet: 1100px;
 .t-fpanel {
   position: fixed;
   top: 0;
-  right: 0;
+  inset-inline-end: 0;
   bottom: 0;
   z-index: 2401;
   width: 400px;
@@ -576,7 +576,7 @@ $t-tablet: 1100px;
 
   @media (max-width: $t-phone) {
     top: 48px;
-    left: 0;
+    inset-inline-start: 0;
     width: 100vw;
     border-radius: 18px 18px 0 0;
     overflow: hidden;
@@ -1117,7 +1117,7 @@ $t-tablet: 1100px;
   &__cbx {
     position: absolute;
     top: 8px;
-    left: 8px;
+    inset-inline-start: 8px;
     display: grid;
     place-items: center;
     width: 22px;
@@ -1894,7 +1894,7 @@ $t-tablet: 1100px;
 .t-signin__x {
   position: absolute;
   top: 12px;
-  right: 12px;
+  inset-inline-end: 12px;
   display: grid;
   place-items: center;
   width: 40px;

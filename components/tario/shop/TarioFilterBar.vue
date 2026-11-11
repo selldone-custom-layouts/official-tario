@@ -13,11 +13,11 @@
   the address as it always has.
 -->
 <template>
-  <div class="t-fbar" role="toolbar" aria-label="Filter and sort">
+  <div :aria-label="t('tario.filter.label', 'Filter and sort')" class="t-fbar" role="toolbar">
     <div class="t-fbar__row">
       <button :class="{ '-on': on_count }" class="t-chip -all" type="button" @click="openPanel">
         <v-icon size="18">tune</v-icon>
-        Filter &amp; sort<b v-if="on_count" class="t-chip__n">{{ on_count }}</b>
+        {{ t("tario.filter.title", "Filter & sort") }}<b v-if="on_count" class="t-chip__n">{{ on_count }}</b>
       </button>
       <span aria-hidden="true" class="t-fbar__sep"></span>
 
@@ -30,7 +30,7 @@
         @click="toggleDeals"
       >
         <v-icon size="17">local_offer</v-icon>
-        Deals
+        {{ t("header.deals", "Deals") }}
       </button>
 
       <!-- Price -->
@@ -43,11 +43,11 @@
       >
         <template v-slot:activator="{ props }">
           <button :class="{ '-on': price_on, '-open': menus.price }" class="t-chip" type="button" v-bind="props">
-            Price<v-icon size="18">{{ menus.price ? "expand_less" : "expand_more" }}</v-icon>
+            {{ t("tario.filter.price", "Price") }}<v-icon size="18">{{ menus.price ? "expand_less" : "expand_more" }}</v-icon>
           </button>
         </template>
         <div class="t-dd">
-          <h5>Price</h5>
+          <h5>{{ t("tario.filter.price", "Price") }}</h5>
           <v-range-slider
             v-model="price_draft"
             :max="price_max"
@@ -61,8 +61,8 @@
             <span><u-price :amount="price_draft[0]" /></span>–<span><u-price :amount="price_draft[1]" /></span>
           </div>
           <div class="t-dd__ft">
-            <button class="t-btn -line" type="button" @click="clearPrice">Clear</button>
-            <button class="t-btn -red" type="button" @click="applyPrice">Apply</button>
+            <button class="t-btn -line" type="button" @click="clearPrice">{{ t("tario.filter.clear", "Clear") }}</button>
+            <button class="t-btn -red" type="button" @click="applyPrice">{{ t("tario.filter.apply", "Apply") }}</button>
           </div>
         </div>
       </v-menu>
@@ -98,14 +98,14 @@
             </label>
           </div>
           <div class="t-dd__ft">
-            <button class="t-btn -line" type="button" @click="applyGroup(group, [])">Clear</button>
-            <button class="t-btn -red" type="button" @click="applyGroup(group, draft)">Apply</button>
+            <button class="t-btn -line" type="button" @click="applyGroup(group, [])">{{ t("tario.filter.clear", "Clear") }}</button>
+            <button class="t-btn -red" type="button" @click="applyGroup(group, draft)">{{ t("tario.filter.apply", "Apply") }}</button>
           </div>
         </div>
       </v-menu>
 
       <button v-if="more_groups.length" :class="{ '-on': more_on }" class="t-chip" type="button" @click="openPanel">
-        More<b v-if="more_on" class="t-chip__n">{{ more_on }}</b><v-icon size="18">expand_more</v-icon>
+        {{ t("tario.filter.more", "More") }}<b v-if="more_on" class="t-chip__n">{{ more_on }}</b><v-icon size="18">expand_more</v-icon>
       </button>
 
       <!-- Scope menus for the catalogue (search, deals, every product) -->
@@ -114,7 +114,7 @@
       <v-menu v-model="menus.sort" location="bottom end" offset="8">
         <template v-slot:activator="{ props }">
           <button class="t-fbar__sort" type="button" v-bind="props">
-            Sort: <b>{{ sortName(sort, sortFallback) }}</b>
+            {{ t("tario.filter.sortColon", "Sort:") }} <b>{{ sortName(sort, sortFallback) }}</b>
             <v-icon size="18">{{ menus.sort ? "expand_less" : "expand_more" }}</v-icon>
           </button>
         </template>
@@ -138,20 +138,20 @@
          overlay that pushed a fixed sheet off a phone's screen). -->
     <teleport to="body">
       <transition name="t-fade">
-        <div v-if="panel" aria-hidden="true" class="t-fscrim" @click="panel = false"></div>
+        <div v-if="panel" :dir="$vuetify.locale.isRtl ? 'rtl' : 'ltr'" aria-hidden="true" class="t-fscrim" @click="panel = false"></div>
       </transition>
       <transition :name="phone ? 't-up' : 't-left'">
-        <div v-if="panel" aria-label="Filter and sort" aria-modal="true" class="t-fpanel" role="dialog" @keydown.esc="panel = false">
+        <div v-if="panel" :aria-label="t('tario.filter.label', 'Filter and sort')" :dir="$vuetify.locale.isRtl ? 'rtl' : 'ltr'" aria-modal="true" class="t-fpanel" role="dialog" @keydown.esc="panel = false">
       <div class="t-fpanel__in">
             <header class="t-fpanel__h">
-              Filter &amp; sort
-              <button aria-label="Close" class="t-fpanel__x" type="button" @click="panel = false">
+              {{ t("tario.filter.title", "Filter & sort") }}
+              <button :aria-label="t('common.close', 'Close')" class="t-fpanel__x" type="button" @click="panel = false">
                 <v-icon size="24">close</v-icon>
               </button>
             </header>
             <div class="t-fpanel__b">
               <section class="t-fgrp">
-                <h5>Sort by</h5>
+                <h5>{{ t("tario.filter.sortBy", "Sort by") }}</h5>
                 <label v-for="s in SORTS" :key="s.val" class="t-radio">
                   <input v-model="panel_sort" :value="s.val" name="t-sort" type="radio" />
                   <span class="t-radio__dot"></span>{{ s.name }}
@@ -159,13 +159,13 @@
               </section>
               <section v-if="!ignore.includes('discount')" class="t-fgrp">
                 <label class="t-switch">
-                  <span>On sale only</span>
+                  <span>{{ t("tario.filter.onSale", "On sale only") }}</span>
                   <input v-model="panel_value.only_has_discount" type="checkbox" />
                   <i></i>
                 </label>
               </section>
               <section v-if="has_price" class="t-fgrp">
-                <h5>Price</h5>
+                <h5>{{ t("tario.filter.price", "Price") }}</h5>
                 <v-range-slider
                   v-model="panel_price"
                   :max="price_max"
@@ -197,8 +197,8 @@
               </section>
             </div>
             <footer class="t-fpanel__f">
-              <button class="t-btn -line" type="button" @click="panelClear">Clear all</button>
-              <button class="t-btn -red" type="button" @click="panelApply">Show results</button>
+              <button class="t-btn -line" type="button" @click="panelClear">{{ t("tario.filter.clearAll", "Clear all") }}</button>
+              <button class="t-btn -red" type="button" @click="panelApply">{{ t("tario.filter.show", "Show results") }}</button>
             </footer>
           </div>
         </div>
@@ -230,7 +230,7 @@ export default {
     /** The filter the listing has now. */
     modelValue: { type: Object, default: null },
     sort: { type: String, default: null },
-    sortFallback: { type: String, default: "Featured" },
+    sortFallback: { type: String, default: null },
   },
 
   data() {

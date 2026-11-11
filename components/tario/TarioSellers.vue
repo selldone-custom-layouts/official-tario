@@ -9,7 +9,7 @@
 <template>
   <section v-if="cards.length" aria-labelledby="t-sellers" class="t-sec k-wrap">
     <header class="t-sec__head">
-      <h2 id="t-sellers" class="t-sec__title">Shop our sellers</h2>
+      <h2 id="t-sellers" class="t-sec__title">{{ t("tario.home.ourSellers", "Shop our sellers") }}</h2>
     </header>
     <div class="t-sellers">
       <router-link v-for="card in cards" :key="card.vendor.id" :to="card.to" class="t-seller">
@@ -19,8 +19,8 @@
         </span>
         <span class="t-seller__text">
           <b>{{ card.vendor.name }}</b>
-          <span>{{ card.lede }}</span>
-          <u>Visit shop</u>
+          <span>{{ card.vendor.description || (card.count ? t("tario.sellers.products", { one: "{n} product on {shop}", other: "{n} products on {shop}" }, { n: card.count, shop: shopTitle }) : t("tario.sellers.aSeller", "A seller on {shop}", { shop: shopTitle })) }}</span>
+          <u>{{ t("tario.visitShop", "Visit shop") }}</u>
         </span>
         <span aria-hidden="true" class="t-seller__pics">
           <img v-for="product in card.pics" :key="product.id" :src="picture(product)" alt="" loading="lazy" />
@@ -59,9 +59,7 @@ export default {
           vendor,
           mark: vendorImage(vendor, true),
           to: sellerRoute(vendor),
-          lede:
-            vendor.description ||
-            (count ? `${count} ${count === 1 ? "product" : "products"} on ${this.shopTitle}` : `A seller on ${this.shopTitle}`),
+          count,
           pics: [...own, ...shared].slice(0, 4),
         };
       });

@@ -23,15 +23,15 @@
         <p v-if="groups.length > 1" class="t-bdrawer__type">{{ typeName(group.type) }}</p>
         <div v-if="free_from && group.type === 'PHYSICAL' && freeLimit(group) != null" class="t-meter2">
           <template v-if="freeLeft(group) > 0">
-            Add <b><span class="u--price">{{ money(freeLeft(group), group.currency) }}</span></b> more for free shipping
+            <template v-for="(part, i) in t('tario.meter.addMore', 'Add {amount} more for free shipping').split('{amount}')" :key="i"><b v-if="i"><span class="u--price">{{ money(freeLeft(group), group.currency) }}</span></b>{{ part }}</template>
           </template>
-          <template v-else><b>Free shipping</b> on this order</template>
+          <template v-else><b>{{ t("tario.meter.free", "Free shipping") }}</b> {{ t("tario.meter.onThisOrder", "on this order") }}</template>
           <div class="t-meter__bar"><i :style="{ width: freePct(group) + '%' }"></i></div>
         </div>
         <template v-for="sg in bySeller(group)" :key="sg.key">
           <p class="t-bdrawer__seller">
             <img v-if="sg.logo" :src="sg.logo" alt="" height="22" width="22" />
-            Sold by {{ sg.name }}
+            {{ t("tario.drawer.soldBy", "Sold by {name}", { name: sg.name }) }}
           </p>
           <ul class="k-bdrawer__rows">
             <li v-for="item in sg.items" :key="item.id" class="k-bdrawer__row">
@@ -44,16 +44,16 @@
                   <small v-if="size(item)">{{ size(item) }}</small>
                 </router-link>
                 <div
-                  :aria-label="`Quantity of ${item.product?.title || 'this item'}`"
+                  :aria-label="item.product?.title ? t('cart.qty.of', 'Quantity of {name}', { name: item.product.title }) : t('cart.qty.ofThis', 'Quantity of this item')"
                   :class="{ '-busy': settling(item.product, item) }"
                   class="k-bdrawer__qty"
                   role="group"
                 >
-                  <button :aria-label="shown(item) > 1 ? 'One fewer' : 'Remove from cart'" type="button" @click="step(item, -1)">
+                  <button :aria-label="shown(item) > 1 ? t('cart.qty.fewer', 'One fewer') : t('cart.qty.remove', 'Remove from cart')" type="button" @click="step(item, -1)">
                     <v-icon size="16">{{ shown(item) > 1 ? "remove" : "delete_outline" }}</v-icon>
                   </button>
                   <output aria-live="polite">{{ shown(item) }}</output>
-                  <button :disabled="shown(item) >= max(item)" aria-label="One more" type="button" @click="step(item, 1)">
+                  <button :disabled="shown(item) >= max(item)" :aria-label="t('cart.qty.more', 'One more')" type="button" @click="step(item, 1)">
                     <v-icon size="16">add</v-icon>
                   </button>
                 </div>
@@ -71,17 +71,17 @@
 
     <footer v-for="group in groups.slice(0, 1)" :key="'f' + group.type" :class="{ '-settling': group.settling }" class="t-bdrawer__foot">
       <p class="t-bdrawer__row">
-        <span>Items ({{ group.units }})</span><span class="u--price">{{ money(group.total + group.saved, group.currency) }}</span>
+        <span>{{ t("tario.drawer.items", "Items ({n})", { n: group.units }) }}</span><span class="u--price">{{ money(group.total + group.saved, group.currency) }}</span>
       </p>
       <p v-if="group.saved >= 0.01" class="t-bdrawer__row -save">
-        <span>You save</span><span>−<span class="u--price">{{ money(group.saved, group.currency) }}</span></span>
+        <span>{{ t("basket.receipt.youSave", "You save") }}</span><span>−<span class="u--price">{{ money(group.saved, group.currency) }}</span></span>
       </p>
       <p class="t-bdrawer__row -tot">
-        <span>Subtotal</span><span class="u--price">{{ money(group.total, group.currency) }}</span>
+        <span>{{ t("tario.drawer.subtotal", "Subtotal") }}</span><span class="u--price">{{ money(group.total, group.currency) }}</span>
       </p>
       <div class="t-bdrawer__btns">
-        <router-link :to="checkoutRoute(group.type)" class="t-btn -line" @click="$emit('close')">View cart</router-link>
-        <router-link :to="checkoutRoute(group.type)" class="t-btn -red" @click="$emit('close')">Check out</router-link>
+        <router-link :to="checkoutRoute(group.type)" class="t-btn -line" @click="$emit('close')">{{ t("tario.drawer.viewCart", "View cart") }}</router-link>
+        <router-link :to="checkoutRoute(group.type)" class="t-btn -red" @click="$emit('close')">{{ t("tario.drawer.checkOut", "Check out") }}</router-link>
       </div>
     </footer>
   </div>
