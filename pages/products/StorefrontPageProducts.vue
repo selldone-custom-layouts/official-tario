@@ -138,7 +138,7 @@
         <section v-if="more_aisles.length" class="t-keep">
           <h2 class="t-keep__h">{{ t("basket.keepShopping", "Keep shopping") }}</h2>
           <div class="t-keep__list">
-            <router-link v-for="a in more_aisles" :key="a.id" :to="aisleTo(a)">{{ a.title || a.name }}</router-link>
+            <router-link v-for="a in more_aisles" :key="a.id" :to="aisleTo(a)"><bdi>{{ a.title || a.name }}</bdi></router-link>
           </div>
         </section>
       </div>

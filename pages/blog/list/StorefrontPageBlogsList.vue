@@ -45,7 +45,7 @@
             :to="journalRoute({ category: category.id })"
             class="t-chip"
           >
-            {{ category.title || category.name }}
+            <bdi>{{ category.title || category.name }}</bdi>
           </router-link>
         </nav>
       </header>

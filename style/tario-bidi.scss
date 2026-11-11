@@ -1,0 +1,65 @@
+/* ▆▆▆▆▆▆▆▆ Merchant text in either direction (11 November 2026) ▆▆▆▆▆▆▆▆
+
+   What the merchant writes (product, aisle, brand and seller names,
+   descriptions, spec values, article text) keeps its own direction on a
+   page of the other direction: an English "Breads & Bakery." on an Arabic
+   page keeps its full stop at its end ("TVs." does not show as ".TVs"),
+   an Arabic name on an English page reads right to left.
+   unicode-bidi: plaintext takes each paragraph's direction from its first
+   strong letter. Bare names beside an icon or a picture are wrapped in
+   <bdi> in the templates instead (the header's and phone menu's aisle and
+   seller rows, the footer's aisles, sellers and shop links, the seller
+   page's aisle tiles, the search page's aisle chips, "Keep shopping", the
+   404's aisles, the journal's topics), so their row keeps the page's
+   direction. Molino's list (new-shop-kits/i18n/README.md) plus Tario's own
+   pieces. */
+
+:is(
+    /* Tario's own pieces */
+    .t-card__name,
+    .t-circle__name,
+    .t-pdp__title,
+    .t-pdp__brand,
+    .t-top__h1,
+    .t-top__lede,
+    .t-tile__cap small,
+    .t-hero__lede,
+    .t-seller__text b,
+    .t-seller__text span,
+    .t-sban__who h1,
+    .t-sabout p,
+    .t-fbt__name,
+    .t-about__seller b,
+    .t-post h3,
+    .t-post p,
+    .t-feat h2,
+    .t-feat p,
+    .k-bdrawer__name > span,
+    .k-often__name,
+    /* Kalio's pieces */
+    .k-pdp__title,
+    .k-pdp__sub,
+    .k-shelf__name,
+    .k-seller__name,
+    .k-offer__name,
+    .k-again__name,
+    .k-lines__title,
+    .k-lines__name,
+    .k-cmp__nm,
+    .k-cmp-add__nm,
+    .k-mini__name,
+    .k-jentry__title,
+    .k-jentry__lede,
+    .k-footer__lede,
+    .k-rail__title,
+    /* Selldone's pieces Tario shows */
+    .s--product-card .toggle-hidden-on-hover .font-weight-bold,
+    .s--product-card .row-pro-title,
+    .s--title-en,
+    .s--product-spec td,
+    .s--product-spec th,
+    .s--product-spec li,
+    .s--product-section-article :is(p, li, h1, h2, h3, h4, h5, h6, td, th, blockquote, figcaption)
+  ) {
+  unicode-bidi: plaintext;
+}

@@ -34,7 +34,7 @@
       <div class="t-404__aisles">
         <router-link v-for="a in list.slice(0, 8)" :key="a.id" :to="aisleRoute(a)">
           <span :style="{ background: tint(a) }"><img v-if="a.icon" :src="aisleImage(a, 128)" alt="" loading="lazy" /></span>
-          {{ a.title || a.name }}
+          <bdi>{{ a.title || a.name }}</bdi>
         </router-link>
       </div>
     </section>

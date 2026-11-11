@@ -45,7 +45,7 @@
       <div v-if="hits.length" class="t-inaisles">
         <span class="t-inaisles__l">{{ t("tario.search.inAisles", "In aisles:") }}</span>
         <router-link v-for="h in hits" :key="h.aisle.id" :to="h.to" class="t-inaisles__a">
-          <img v-if="h.image" :src="h.image" alt="" />{{ h.aisle.title || h.aisle.name }}<b v-if="h.count">{{ h.count }}</b>
+          <img v-if="h.image" :src="h.image" alt="" /><bdi>{{ h.aisle.title || h.aisle.name }}</bdi><b v-if="h.count">{{ h.count }}</b>
         </router-link>
       </div>
     </template>

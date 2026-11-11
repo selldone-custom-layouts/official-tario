@@ -57,7 +57,7 @@
       <div class="t-saisles">
         <router-link v-for="a in aisleTiles" :key="a.aisle.id" :to="a.to" class="t-saisle">
           <img v-if="a.image" :src="a.image" alt="" loading="lazy" />
-          {{ a.aisle.title || a.aisle.name }}
+          <bdi>{{ a.aisle.title || a.aisle.name }}</bdi>
           <span>{{ t("tario.seller.productCount", { one: "{n} product", other: "{n} products" }, { n: a.count }) }}</span>
         </router-link>
       </div>
