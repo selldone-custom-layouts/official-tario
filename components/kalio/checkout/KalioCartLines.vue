@@ -35,7 +35,7 @@
           <router-link :to="productRoute(item.product_id)" class="k-lines__title">{{ item.product?.title }}</router-link>
           <small class="k-lines__each">
             <template v-if="size(item)">{{ t("tario.cart.size", "Size: {size}", { size: size(item) }) }} · </template
-            ><template v-if="item.product?.unit && !/^(each|ea|piece|pc)$/i.test(item.product.unit)">{{ t("rail.perUnit", "per {unit}", { unit: item.product.unit }) }} · </template
+            ><template v-if="item.product?.unit && !/^(each|ea|piece|pc|unidad)$/i.test(item.product._unit_en || item.product.unit)">{{ t("rail.perUnit", "per {unit}", { unit: item.product.unit }) }} · </template
             ><template v-for="(part, i) in t('compare.perEach', '{price} each').split('{price}')" :key="i"><u-price v-if="i" :amount="item.price" :currency="item.currency" />{{ part }}</template>
           </small>
           <button class="k-lines__remove" type="button" @click="step(item, -shown(item))">
