@@ -157,7 +157,8 @@ import TarioShelfTop from "../../components/tario/shop/TarioShelfTop.vue";
 import TarioFilterBar from "../../components/tario/shop/TarioFilterBar.vue";
 import TarioRow from "../../components/tario/TarioRow.vue";
 import { fromRoute } from "../../components/tario/shop/tario-filters";
-import { aisleRoute, aisles, countProducts, offers, vendors } from "../../components/kalio/kalio-catalog";
+import { aisleInLanguage, aisleRoute, aisles, countProducts, offers, vendors } from "../../components/kalio/kalio-catalog";
+import { currentLanguage } from "../../components/region-switcher/region";
 import TarioSellerTop from "../../components/tario/shop/TarioSellerTop.vue";
 import {StorefrontSeo} from "../../helpers/StorefrontSeo";
 import KalioQuickBuy from "../../components/kalio/KalioQuickBuy.vue";
@@ -189,7 +190,7 @@ export default {
     catalogue_total: null /* The listing's total, for the aisle and catalogue headers. */,
     quick_open: false /* Kalio's quick-buy sheet, for the listing's "+". */,
     quick_pick: null,
-    listing_parent: null /* The aisle's record, as the listing read it. */,
+    listing_parent: null /* The aisle's record, as the listing read it, named in the visitor's language. */,
     listing_products: [],
     t_filter: null /* The filter the listing has (the bar shows it). */,
     t_sort: null,
@@ -216,6 +217,11 @@ export default {
 
     search_query() {
       return String(this.$route.query?.search || "").trim();
+    },
+
+    /* The visitor's language: a pick names the aisle again in it. */
+    lang() {
+      return currentLanguage();
     },
 
     /* Selldone's filter record: the aisle's own, or the shop's on the catalogue. */
@@ -284,6 +290,8 @@ export default {
       /* A new aisle or seller starts without a count until its listing reads. */
       this.catalogue_total = null;
       this.listing_parent = null;
+      this.parent_raw = null;
+      this.parent_ticket++;
       this.listing_products = [];
       this.$nextTick(() => this.readRoute());
     },
@@ -293,6 +301,16 @@ export default {
     },
     "$route.query.search"() {
       this.readOnSale();
+    },
+    /* A language picked on the page: the aisle's title, description, crumb
+       and "Keep shopping" in it (ES-05). */
+    lang() {
+      aisles().then((list) => (this.aisle_list = list));
+      if (!this.parent_raw) return;
+      const ticket = ++this.parent_ticket;
+      aisleInLanguage(this.parent_raw).then((parent) => {
+        if (ticket === this.parent_ticket) this.listing_parent = parent;
+      });
     },
     /* The router reuses this one component for the catalogue root, every
        aisle and every seller, so created() runs only for the first of them:
@@ -315,6 +333,11 @@ export default {
    * ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
    */
   created() {
+    /* The aisle's record as the listing sent it (shop language), and the
+       latest naming of it, so an older answer never lands after a newer. */
+    this.parent_raw = null;
+    this.parent_ticket = 0;
+
     this.releaseQuickBuy = hostQuickBuy((product) =>
       quickAdd(this, product, (picked) => {
         this.quick_pick = picked;
@@ -343,9 +366,27 @@ export default {
     },
     updateProductsSeo(data) {
       this.catalogue_total = typeof data?.total === "number" ? data.total : null;
-      if (data?.parent !== undefined) this.listing_parent = data.parent && data.parent.id ? data.parent : null;
       this.listing_products = data?.products || [];
-      StorefrontSeo.updateProducts(data, this.getShop(), this.seoNavigation);
+      const shop = this.getShop();
+      const navigation = this.seoNavigation;
+      if (data?.parent === undefined) {
+        StorefrontSeo.updateProducts(data, shop, navigation);
+        return;
+      }
+      /* ES-05 (11 November 2026): the aisle's record (`parent`) comes in the
+         shop's own language whatever the visitor reads, so its title and
+         description are taken from the translated aisle list
+         (aisleInLanguage): the shelf top's title, lede and crumb, and the
+         tab title, match the header's aisle words. Its filters, slug and id
+         are untouched. */
+      const raw = data.parent && data.parent.id ? data.parent : null;
+      this.parent_raw = raw;
+      const ticket = ++this.parent_ticket;
+      aisleInLanguage(raw).then((parent) => {
+        if (ticket !== this.parent_ticket) return;
+        this.listing_parent = parent;
+        StorefrontSeo.updateProducts({ ...data, parent }, shop, navigation);
+      });
     },
 
     /* ── Tario's filter bar talks to the listing directly ── */

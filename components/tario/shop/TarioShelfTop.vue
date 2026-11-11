@@ -2,7 +2,9 @@
   Tario — the top of a listing (shop page design A, 7 November 2026).
 
   An aisle: the crumbs, the aisle's title and description from its live
-  record, then one round picture per value of the aisle's "Type" filter
+  record (named in the visitor's language by the page, aisleInLanguage:
+  Selldone sends the record itself in the shop's language; ES-05), then one
+  round picture per value of the aisle's "Type" filter
   (Milk, Eggs, Butter…), each a shortcut to that filter. The picture is the
   first product of that type, read once per aisle.
 
@@ -56,6 +58,7 @@
 import { aisleIndex, aisleImage, productImage } from "../../kalio/kalio-catalog";
 import { valueLabel } from "./tario-filters";
 import { t } from "../../kalio/i18n/kalio-i18n";
+import { currentLanguage } from "../../region-switcher/region";
 
 /* One picture per type, read once per aisle and kept for the visit. */
 const typePictures = new Map();
@@ -82,6 +85,9 @@ export default {
   },
 
   computed: {
+    lang() {
+      return currentLanguage();
+    },
     search() {
       return String(this.$route.query.search || "").trim();
     },
@@ -132,6 +138,11 @@ export default {
     typeKey: { handler: "readTypes", immediate: true },
     categoryName() {
       this.types = [];
+    },
+    /* A language picked on the page: the "In aisles" names in it
+       (aisles() reads the folders again in the new language). */
+    lang() {
+      if (this.mode !== "aisle") aisleIndex().then((index) => (this.index = index));
     },
   },
 
