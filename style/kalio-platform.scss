@@ -2146,8 +2146,9 @@ button.k-compare-fab.s--storefront-products-comparison-circle-progress {
    on hover, focus or press. The rule is set on the pressable thing itself
    (a line drawn by a parent runs under every word inside it) and on the
    pieces Vuetify and Selldone put inside a button; it never touches a
-   struck-through old price. Links inside an article's own text (.k-prose,
-   the shop's writing) keep theirs, so they stand out from the words. */
+   struck-through old price. Tario 1.2.24: links inside an article's own
+   text (.k-prose, the shop's writing) draw none either; their colour says
+   they are links. */
 :where(a, button, summary, label, [role="button"], [role="link"], [role="tab"], .v-btn, .v-tab, .v-chip, .v-list-item),
 :where(a, button, [role="button"], .v-btn, .v-tab, .v-chip, .v-list-item) :where(.v-icon, i, .v-btn__content, .v-list-item-title, .single-line) {
   text-decoration: none !important;
@@ -2160,8 +2161,7 @@ button.k-compare-fab.s--storefront-products-comparison-circle-progress {
 /* Words inside a link or a button (an em, a span) carry no line either: the
    owner's rule (8 November 2026) is no line under any word or icon, and
    Walio's hero tiles still underlined "Shop deals" in an em (9 November
-   2026). Only links inside an article's own text keep theirs (.k-prose a:
-   a line drawn by the link itself still runs under its words). */
+   2026). */
 :where(a, button, [role="button"], [role="link"]) :where(em, span, b, strong, small, i, p, h1, h2, h3, h4, div) {
   text-decoration: none !important;
 }
