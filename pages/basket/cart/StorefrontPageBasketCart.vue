@@ -500,6 +500,7 @@ import KalioAddressSheet from "../../../components/kalio/checkout/KalioAddressSh
 import { convertIfKnown, freeShippingFrom, moneyIfKnown, waysOf } from "../../../components/tario/tario-home";
 import { currentCurrency, money } from "../../../components/region-switcher/region";
 import { formatDate, t } from "../../../components/kalio/i18n/kalio-i18n";
+import { priceText } from "../../../components/kalio/i18n/price-text";
 
 export default {
   name: "StorefrontPageBasketCart",
@@ -1019,7 +1020,12 @@ export default {
         const place = this.receiver_info?.title || this.receiver_info?.name || this.receiver_info?.address;
         return place ? t("basket.delivery.pickupFrom", "Pickup from {place}.", { place }) : t("basket.delivery.method", "{name}.", { name });
       }
-      return this.shipping_cost === 0 ? t("basket.delivery.methodFree", "{name}, free.", { name }) : t("basket.delivery.method", "{name}.", { name });
+      // The order page's line, word for word ("Camión · $25.00", "Camión · Gratis"):
+      // the cart said "Camión." and the order "Camión · 25,00 US$" (the owner's
+      // Spanish test order, 12 November 2026).
+      const price = this.shipping_cost;
+      const cost = price > 0 ? priceText(price, this.bill?.currency || this.basket?.currency, this.$shop) : price === 0 ? t("order.delivery.free", "Free") : null;
+      return [name, cost].filter(Boolean).join(" · ");
     },
     shop_ways() {
       return waysOf(this.$shop).slice(0, 3);
